@@ -16,6 +16,7 @@ define([
                 this.sprite.width = SETTINGS.cardWidth;
                 this.sprite.height = SETTINGS.oneLineHeight;
                 _.extend(this, Backbone.Events);
+
             }
 
             changeClickListenerToBattleFieldListener(cardModel){

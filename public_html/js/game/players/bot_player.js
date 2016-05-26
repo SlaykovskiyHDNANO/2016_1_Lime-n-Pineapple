@@ -20,32 +20,38 @@ define(['jquery', 'backbone', 'pixi', './abstract_player', './EventsConfig'], fu
             var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Bot).call(this, loaderRes, container));
 
             _this.createDesc(container);
-            Backbone.on("AIprocess", function () {
+            _this.on(Events.Game.AbstractPlayer.Act, function () {
                 this.act();
             }, _this);
+            for (var i = 0; i < _this.cardCollection.length; i += 1) {
+                _this.setTouchEventCard(_this.cardCollection[i]);
+            }
+
             return _this;
         }
 
         _createClass(Bot, [{
             key: 'act',
             value: function act() {
-                if (this.container.children.length) {
-                    var card = this.container.getChildAt(Math.floor(Math.random() * this.container.children.length));
-                    this.container.removeChild(card);
-                    var r = Math.floor(Math.random() * 2 + 1);
-                    if (r === 1) {
-                        this.containerDistant.addChild(card);
-                        Backbone.trigger("RemoveGapsInDeckForAI", this.containerDistant);
-                    } else {
-                        this.containerInfighting.addChild(card);
-                        Backbone.trigger("RemoveGapsInDeckForAI", this.containerInfighting);
-                    }
+                if (this.cardCollection.length) {
+                    var card = this.cardCollection[Math.floor(Math.random() * this.cardCollection.length)];
+                    $(this).one(Events.Game.Bot.MustAddToBattle, function () {
+                        var variantsOfBattleContainer = this.nowActiveContainer.length;
+                        var rand = Math.floor(Math.random() * variantsOfBattleContainer);
+                        this.trigger(Events.Game.AbstractPlayer.AddInfoCardToBattlesContainer, this.nowActiveContainer[rand]);
+                    }.bind(this));
+                    this.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, card);
                 }
             }
         }, {
             key: 'createDesc',
             value: function createDesc(container) {
                 _get(Object.getPrototypeOf(Bot.prototype), 'createDeck', this).call(this, container);
+            }
+        }, {
+            key: 'setTouchEventCard',
+            value: function setTouchEventCard(card) {
+                card.trigger(Events.Game.AbstractCardModel.SetTouchEventCard, this);
             }
         }]);
 

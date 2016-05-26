@@ -49,6 +49,9 @@ define([], function () {
             Player: {
                 PlayerAct: "Player::PlayerAct"
             },
+            Bot: {
+                MustAddToBattle: "Bot::MustAddToBattle"
+            },
             CardModel: {
                 CleanClickEventCard: "CardModel::CleanClickEventCard"
             },
@@ -89,7 +92,8 @@ define([], function () {
             All: {
                 AllRendered: "All::AllRendered",
                 RendererStopped: "All::RendererStopped",
-                RendererResume: "All::RendererResume"
+                RendererResume: "All::RendererResume",
+                NextPlayerStep: "All::NextPlayerStep"
             }
         },
         Messenger: {}

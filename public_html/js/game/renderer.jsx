@@ -40,17 +40,17 @@ define([
 
                     this.stage.parent = this.renderer;
 
-                    Backbone.trigger(Events.Backbone.All.AllRendered, this.stage);
-
                     Backbone
                         .on(Events.Backbone.Renderer.RenderAnimation, function (viewFunc, frames) {
                             this.viewFunc = viewFunc;
                             this.frames = frames;
+                            console.log(frames);
                         }, this);
 
                     this.intervalID = requestAnimationFrame(function(timeStamp){
                         self.animate(timeStamp);
                     });
+                    Backbone.trigger(Events.Backbone.All.AllRendered, this.stage);
                 }, this);
 
                 this
@@ -64,6 +64,7 @@ define([
                         });
                         Backbone.trigger(Events.Backbone.All.RendererResume);
                     }, this);
+
             }
 
 

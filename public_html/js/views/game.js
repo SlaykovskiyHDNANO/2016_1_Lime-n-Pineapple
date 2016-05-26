@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'underscore', 'backbone', 'settings', 'pixi', './baseView', 'tmpl/game', 'engine/loader'], function ($, _, Backbone, Settings, pixi, BaseView, tmpl, Loader) {
+define(['jquery', 'underscore', 'backbone', 'settings', 'pixi', './baseView', 'tmpl/game', '../game/loader'], function ($, _, Backbone, Settings, pixi, BaseView, tmpl, Loader) {
     var Game = BaseView.extend({
         template: tmpl,
 

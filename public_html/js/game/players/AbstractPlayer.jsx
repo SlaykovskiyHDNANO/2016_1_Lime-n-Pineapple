@@ -35,12 +35,9 @@ define([
                 this.createBossCard();
 
                 this
-                    .on(Events.Game.AbstractPlayer.Act, function(){
-                        this.trigger(Events.Game.Player.PlayerAct);
-                    }, this)
-
                     .on(Events.Game.AbstractPlayer.InfoCardInOwnContainer, function (cardModel) {
                         this.definitionCardsClasses(cardModel);
+                        $(this).trigger(Events.Game.Bot.MustAddToBattle);
                     }, this)
 
                     .on(Events.Game.AbstractPlayer.MustCreateInfoCard, function (cardModel){
@@ -127,6 +124,7 @@ define([
                         score+=parseInt(this.playersCardContainerDistant.containerView.textField.score.text);
                         score+=parseInt(this.playersCardContainerMelee.containerView.textField.score.text);
                         this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.UpdateText, "score", score.toString());
+                        Backbone.trigger(Events.Backbone.All.NextPlayerStep);
                     }, this);
             }
 

@@ -27,9 +27,9 @@ function onError(error) {
         throw error;
 
 
-    var bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port;
+    var bind = typeof PORT === 'string'
+        ? 'Pipe ' + PORT
+        : 'Port ' + PORT;
 
     // handle errors on startup phase (basically, just explains failure and exits)
     switch (error.code) {

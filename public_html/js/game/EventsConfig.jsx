@@ -46,8 +46,11 @@ define([],
                     SetClickEventCard                       :   "AbstractCardModel::SetClickEventCard"
                 },
 
-                Player : {
+                Player: {
                     PlayerAct                               :   "Player::PlayerAct"
+                },
+                Bot: {
+                    MustAddToBattle                         :   "Bot::MustAddToBattle"
                 },
                 CardModel: {
                     CleanClickEventCard                     :   "CardModel::CleanClickEventCard"
@@ -89,7 +92,8 @@ define([],
                 All: {
                     AllRendered                             :   "All::AllRendered",
                     RendererStopped                         :   "All::RendererStopped",
-                    RendererResume                          :   "All::RendererResume"
+                    RendererResume                          :   "All::RendererResume",
+                    NextPlayerStep                          :   "All::NextPlayerStep"
                 }
             },
             Messenger: {

@@ -71,7 +71,8 @@ define([
                     this.textField[name] = new pixi.Text(str);
                     this.textField[name].x = x;
                     this.textField[name].y = y;
-                    this.textField[name].anchor.set(0.5);
+                    this.textField[name].anchor.x = 0;
+                    this.textField[name].anchor.y = 0.5;
                     this.containerView.addChild(this.textField[name]);
                 }
             }
