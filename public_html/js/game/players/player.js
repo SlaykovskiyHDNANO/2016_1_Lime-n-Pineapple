@@ -34,13 +34,32 @@ define(['jquery', 'backbone', 'pixi', '../containers/AbstractCardContainerModel'
             _this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight / 2);
             _this.playersContainerBoss.trigger(Events.Game.PlayersContainer.PreparedForBattle);
 
-            for (var i = 0; i < _this.cardCollection.length; i += 1) {
+            var _loop = function _loop(i) {
                 _this.setTouchEventCard(_this.cardCollection[i]);
+                _this.listenTo(_this.cardCollection[i], Events.Game.Player.CardViewPressed, function () {
+                    this.cardViewWasPressed(this.cardCollection[i]);
+                }, _this);
+            };
+
+            for (var i = 0; i < _this.cardCollection.length; i += 1) {
+                _loop(i);
             }
             return _this;
         }
 
         _createClass(Player, [{
+            key: 'cardViewWasPressed',
+            value: function cardViewWasPressed(cardModel) {
+                this.touchedCards.push(cardModel);
+                if (this.infoCard.isHide) {
+                    console.log("ololo");
+                    this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
+                    this.infoCard.alreadyGoingBack = false;
+                } else {
+                    this.createNewInfoCard();
+                }
+            }
+        }, {
             key: 'act',
             value: function act() {}
         }, {

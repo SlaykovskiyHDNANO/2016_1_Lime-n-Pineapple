@@ -52,10 +52,12 @@ define(['backbone', 'underscore', 'pixi', 'jquery', '../Settings', '../EventsCon
         }, {
             key: 'onClickCard',
             value: function onClickCard(cardModel) {
-                if (this.sprite.alpha === 0.1) {
+                if (this.sprite.isClicked) {
+                    this.sprite.isClicked = false;
                     cardModel.trigger(Events.Game.AbstractCardModel.InfoCardBackToDeck);
                 } else {
                     this.sprite.alpha = 0.1;
+                    this.sprite.isClicked = true;
                     this.on(Events.Game.CardView.AlphaVisible, function () {
                         this.sprite.alpha = 1;
                         this.off(Events.Game.CardView.AlphaVisible);

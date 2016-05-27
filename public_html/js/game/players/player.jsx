@@ -33,6 +33,21 @@ define([
 
                 for (let i = 0; i < this.cardCollection.length; i+=1){
                     this.setTouchEventCard(this.cardCollection[i]);
+                    this.listenTo(this.cardCollection[i], Events.Game.Player.CardViewPressed, function () {
+                        this.cardViewWasPressed(this.cardCollection[i]);
+                    }, this);
+                }
+            }
+
+            cardViewWasPressed(cardModel){
+                this.touchedCards.push(cardModel);
+                if (this.infoCard.isHide) {
+                    console.log("ololo");
+                    this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
+                    this.infoCard.alreadyGoingBack = false;
+                }
+                else{
+                    this.createNewInfoCard();
                 }
             }
 

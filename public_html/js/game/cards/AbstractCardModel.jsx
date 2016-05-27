@@ -17,9 +17,6 @@ define([
                         this.cardView.setTouchEventCard(this);
                         this.playerOwner = player;
                     }, this)
-                    .on(Events.Game.AbstractCardModel.CardViewPressed, function(){
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, this);
-                    }, this)
                     .on(Events.Game.AbstractCardModel.InfoCardBackToDeck, function(){
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this);
                     }, this)

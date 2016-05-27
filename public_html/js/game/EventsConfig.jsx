@@ -40,7 +40,6 @@ define([],
                     CreateBattlesInfoCard                   :   "AbstractCardModel::CreateBattlesInfoCard",
                     SetTouchEventCard                       :   "AbstractCardModel::SetTouchEventCard",
                     CleanClickEventCard                     :   "AbstractCardModel::CleanClickEventCard",
-                    CardViewPressed                         :   "AbstractCardModel::CardViewPressed",
                     InfoCardBackToDeck                      :   "AbstractCardModel::InfoCardBackToDeck",
                     ShowInfoBattleCard                      :   "AbstractCardModel::ShowInfoBattleCard",
                     SetClickEventCard                       :   "AbstractCardModel::SetClickEventCard"
@@ -50,7 +49,8 @@ define([],
                 },
 
                 Player: {
-                    PlayerAct                               :   "Player::PlayerAct"
+                    PlayerAct                               :   "Player::PlayerAct",
+                    CardViewPressed                         :   "Player::CardViewPressed"
                 },
                 Bot: {
                     MustAddToBattle                         :   "Bot::MustAddToBattle"

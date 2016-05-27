@@ -54,7 +54,7 @@ define([
             }
 
             singleGame(whoFirst){
-                if (!(whoFirst % 2) && whoFirst % 2){
+                if (whoFirst % 2 === 0 && whoFirst % 2){
                     this.player.trigger(Events.Game.AbstractPlayer.Act);
                 }
                 else if (whoFirst % 2){
