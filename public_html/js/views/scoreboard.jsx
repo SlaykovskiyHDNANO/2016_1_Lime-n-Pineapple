@@ -17,7 +17,9 @@ define([
 
     var Scoreboard = BaseView.extend({
         template: tmpl,
+        defaults : {
 
+        },
         events: {
             "initView": 'render',
             "show": 'show',
@@ -35,6 +37,7 @@ define([
                 this.collection.add({name: "Роб", score: 545});
             }
             this.collection.sort();
+            this.name = "scoreboard";
         },
 
         render: function () {
@@ -47,5 +50,6 @@ define([
         }
 
     });
+
     return Scoreboard;
 });

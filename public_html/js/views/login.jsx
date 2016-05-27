@@ -3,21 +3,29 @@ define([
         'jquery',
         'backbone',
         'settings',
-        'models/session',
+        'collections/sessions',
         './baseView',
         'tmpl/login'
-    ], function ($, Backbone,  Settings, Session, BaseView, tmpl) {
-        var Login = BaseView.extend({
+    ], function ($, Backbone,  Settings, Sessions, BaseView, tmpl) {
+    return BaseView.extend({
             template: tmpl,
             events: {
 
-                'click .btn-lg-back' : function(e) {
+                'click .btn-lg-back': function (e) {
                     Backbone.history.navigate("/", true);
                 },
-                'submit' : '_onSubmitEvent'
+                'submit': '_onSubmitEvent'
             },
 
-            initialize: function () {
+            defaults : {
+                "sessions": null
+            },
+
+            initialize: function (sessions) {
+                console.log("Inside Login View initialize()");
+                this.sessions = sessions;
+                console.log("Exiting login View initialize()");
+                this.name = "login";
             },
 
             _onSubmitEvent: function (e) {
@@ -35,13 +43,10 @@ define([
                 JSON.stringify(reqObj);
                 console.log("Login: ", login, "Password: ", password, "Request object: ", reqObj);
                 console.log("Request parsed as JSON: ", JSON.stringify(reqObj));
-                console.log("Login: ", login, "Password: ", password, "Request object: ", reqObj);
-                console.log("Request parsed as JSON: ", JSON.stringify(reqObj));
-                if (new Session().login(reqObj)) {
-                    Backbone.trigger("loginSuccess");
-                }
+                this.sessions.login(login, password).then( _ => {
+                    console.log("LOGIN SUCCESS");
+                });
             }
         });
-        return new Login();
     }
 );

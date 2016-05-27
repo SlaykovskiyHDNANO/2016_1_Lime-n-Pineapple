@@ -17,35 +17,36 @@ define([
                     "logout": "logoutAction",
                     "*default": "defaultAction"
                 },
-
+                defaults : {
+                   "VM" : null
+                },
 
 
                 initialize: function () {
-                    this.VM = new ViewManager(
-                        "#page__view-holder",
-                        new Views.game(),
-                        new Views.main(),
-                        new Views.scoreboard(),
-                        new Views.login(new Sessions())
-                    );
-                    // this.defaultAction(); - Works without it
+                    console.log("[+] ROUTER building...");
+                    this.VM = new ViewManager();
+                    this.VM.addView("#page__view-holder", new Views.main());
+                    this.VM.addView("#page__view-holder", new Views.login(new Sessions()));
+                    this.VM.addView("#page__view-holder", new Views.game());
+                    this.VM.addView("#page__view-holder", new Views.scoreboard());
+                    console.log("[!] ROUTER built!");
                 },
 
                 defaultAction: function () {
-                    Views.main.show();
+                    this.VM.getView("main").show();
                 },
 
                 scoreboardAction: function () {
                     console.log("Scoreboard action showing...");
-                    Views.scoreboard.show();
+                    this.VM.getView("scoreboard").show();
                 },
 
                 gameAction: function () {
-                    Views.game.show();
+                    this.VM.getView("game").show();
                 },
 
                 loginAction: function () {
-                    Views.login.show();
+                    this.VM.getView("login").show();
                 },
 
                 logoutAction: function() {

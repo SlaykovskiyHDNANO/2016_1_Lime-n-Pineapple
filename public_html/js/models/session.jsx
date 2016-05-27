@@ -10,8 +10,7 @@ define([
     return Backbone.Model.extend( {
         urlRoot: Settings.getActiveServerUrl() + '/api/v1/session',
         defaults: {
-            user: null,
-            user_id: 0
+            
         },
         initialize: function () {
             console.log("[Session::initialize()]: begin to create" );

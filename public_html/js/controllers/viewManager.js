@@ -1,44 +1,66 @@
 'use strict';
 
-function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
 define(['underscore', 'backbone', 'settings'], function (_, Backbone, Settings) {
 
-    var ViewManager = Backbone.View.extend({
+    return Backbone.View.extend({
+        defaults: {
+            "views": null
+        },
         initialize: function initialize() {
             var _this = this;
-            var _len, views, _key;
-            for (_len = arguments.length, views = Array(_len), _key = 0; _key < _len; _key++) {
-                views[_key] = arguments[_key];
-            }
 
-            this.views = views;
+            console.log("[ViewManager::initialize] Inside constructor!");
+            this.views = new Map();
             Backbone.on(Settings.EVENT_VIEWMANAGER_SHOW, function (view) {
-                _newArrowCheck(this, _this);
-
                 console.log("[ViewManager::add::listenTo] Triggered!");
-                this.hide(view);
+                _this.hide(view);
                 view.$el.show();
-            }.bind(this));
+            });
+            console.log("[ViewManager::add::initialize] Exited constructor!");
         },
         hide: function hide(exceptThisView) {
             console.log("[ViewManager::hide] executing...");
             console.log(exceptThisView);
-            _.each(this.views, function (view) {
-                if (view !== exceptThisView) {
-                    view.hide();
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.views.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var view = _step.value;
+
+                    if (view !== exceptThisView) {
+                        view.hide();
+                    }
                 }
-            });
-        },
-        addViews: function addViews() {
-            var _len2, views, _key2;
-            for (_len2 = arguments.length, views = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                views[_key2] = arguments[_key2];
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
             }
+        },
 
-            this.views.concat(views);
+        getView: function getView(key) {
+            return this.views.get(key);
+        },
+
+        addView: function addView(tagName, view) {
+            this.views.set(view.name, view);
+            this._setTagNameViewsEl(view, tagName);
+        },
+        _setTagNameViewsEl: function _setTagNameViewsEl(view, wantTagName) {
+            if (view !== undefined && (view.$el.tagName === undefined || wantTagName && wantTagName.isString())) {
+                view.$el.appendTo($(wantTagName));
+            }
         }
-
     });
-    return ViewManager;
 });

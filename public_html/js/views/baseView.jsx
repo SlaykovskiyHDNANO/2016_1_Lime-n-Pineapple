@@ -7,6 +7,9 @@ define([
 ], function($,  _, Backbone, Settings ){
     var BaseView = Backbone.View.extend({
         tagName: "mytag",
+        defaults : {
+            "name" : "baseView"
+        },
 
         constructor: function () {
             console.log("In constructor");

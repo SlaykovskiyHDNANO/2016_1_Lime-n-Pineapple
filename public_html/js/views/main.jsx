@@ -9,7 +9,9 @@ define([
 ], function( $, _, Backbone, Settings, BaseView, tmpl ){
     var Main = BaseView.extend({
         template: tmpl,
+        defaults : {
 
+        },
         subscriptions: [
             'loginSuccess'
         ],
@@ -25,6 +27,7 @@ define([
                 $("#login").text("Logout");
                 $("#login").attr('href', "#logout");
             });
+            this.name = "main";
         },
         navigate: function (e) {
             Backbone.history.navigate($(e.target).attr("href"), true);
