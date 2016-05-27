@@ -47,5 +47,5 @@ define([
         }
 
     });
-    return new Scoreboard();
+    return Scoreboard;
 });

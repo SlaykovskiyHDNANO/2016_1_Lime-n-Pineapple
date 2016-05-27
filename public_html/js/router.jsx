@@ -5,9 +5,10 @@ define([
         'backbone',
         'views/allViews',
         'controllers/viewManager',
+        'collections/sessions',
         'models/session'
 ],
-    function ($, underscore, Backbone, Views, ViewManager, Session) {
+    function ($, underscore, Backbone, Views, ViewManager, Sessions) {
         var Router = Backbone.Router.extend({
                 routes: {
                     "game": "gameAction",
@@ -17,23 +18,16 @@ define([
                     "*default": "defaultAction"
                 },
 
-                _setTagNameViewsEl: function (view, wantTagName) {
-                    if (view !== undefined && (view.$el.tagName === undefined || (wantTagName && wantTagName.isString()))) {
-                            view.$el.appendTo($(wantTagName));
-                    }
-                },
+
 
                 initialize: function () {
                     this.VM = new ViewManager(
-                        Views.game,
-                        Views.main,
-                        Views.scoreboard,
-                        Views.login
+                        "#page__view-holder",
+                        new Views.game(),
+                        new Views.main(),
+                        new Views.scoreboard(),
+                        new Views.login(new Sessions())
                     );
-                    this._setTagNameViewsEl(Views.game, "#page__view-holder");
-                    this._setTagNameViewsEl(Views.main, "#page__view-holder");
-                    this._setTagNameViewsEl(Views.scoreboard, "#page__view-holder");
-                    this._setTagNameViewsEl(Views.login, "#page__view-holder");
                     // this.defaultAction(); - Works without it
                 },
 
@@ -55,7 +49,7 @@ define([
                 },
 
                 logoutAction: function() {
-                    Session.logout();
+                    
                 }
             });
 

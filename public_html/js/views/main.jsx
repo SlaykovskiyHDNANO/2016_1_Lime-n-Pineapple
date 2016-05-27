@@ -30,6 +30,6 @@ define([
             Backbone.history.navigate($(e.target).attr("href"), true);
         }
     });
-        return new Main();
+        return Main;
     }
 );
