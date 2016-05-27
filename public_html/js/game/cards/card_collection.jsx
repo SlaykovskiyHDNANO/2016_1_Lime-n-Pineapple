@@ -3,9 +3,9 @@ define([
         'jquery',
         'underscore',
         'backbone',
-        'settings',
+        '../../settings',
         'pixi',
-        './cards/CardModel'
+        './CardModel'
 ], function ($, _, Backbone, Settings, pixi, Card) {
         class CardCollection {
 

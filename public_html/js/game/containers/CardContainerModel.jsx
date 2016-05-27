@@ -3,15 +3,15 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'settings',
+    '../../settings',
     'pixi',
     './AbstractCardContainerModel'
 ], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel) {
 
     class CardContainerModel extends AbstractCardContainerModel{
 
-        constructor(cardContainerView) {
-            super(cardContainerView);
+        constructor() {
+            super();
 
         }
 

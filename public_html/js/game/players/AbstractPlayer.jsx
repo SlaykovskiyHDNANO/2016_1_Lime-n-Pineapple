@@ -4,7 +4,7 @@ define([
         'backbone',
         'underscore',
         'pixi',
-        '../card_collection',
+        '../cards/card_collection',
         '../cards/InfoCardModel',
         '../cards/CardBossModel',
         '../EventsConfig'

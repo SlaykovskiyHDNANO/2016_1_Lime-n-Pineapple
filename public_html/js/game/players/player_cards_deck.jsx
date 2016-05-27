@@ -3,10 +3,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'settings',
+    '../../settings',
     'pixi',
-    './cards/AbstractCardContainerModel',
-    './EventsConfig'
+    '../containers/AbstractCardContainerModel',
+    '../EventsConfig'
 ], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
 
     class PlayerCardsDeck extends AbstractCardContainerModel{

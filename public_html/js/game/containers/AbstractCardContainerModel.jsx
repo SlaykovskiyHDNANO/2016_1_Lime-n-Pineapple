@@ -3,31 +3,32 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'settings',
+    '../../settings',
     'pixi',
     '../Settings',
-    '../EventsConfig'
-], function ($, _, Backbone, Settings, pixi, SETTINGS, Events) {
+    '../EventsConfig',
+    './CardContainerView'
+], function ($, _, Backbone, Settings, pixi, SETTINGS, Events, CardContainerView) {
 
     class AbstractCardContainerModel{
 
-        constructor(cardContainerView) {
+        constructor() {
             _.extend(this, Backbone.Events);
             this.cardCollection = [];
-            this.containerView = cardContainerView;
+            this.View = new CardContainerView(true, true);
             this
                 .on(Events.Game.AbstractCardContainerModel.SetContainerPosition, function(container, positionX, positionY){
                     this.setContainerPosition(container, positionX, positionY );
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.SetPositionInContainer, function(object, x, y){
                     if (x && y) {
-                        this.containerView.setPositionInContainer(object, x, y);
+                        this.View.setPositionInContainer(object, x, y);
                     }
                     else{
                         let pX, pY;
                         pX = this.cardCollection.length * object.width + object.width/2 + 3;
                         pY = object.height/2;
-                        this.containerView.setPositionInContainer(object, pX, pY);
+                        this.View.setPositionInContainer(object, pX, pY);
                     }
                 }, this)
 
@@ -35,69 +36,70 @@ define([
                     this.cardCollection.push(cardModel);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.AddChild, function (cardModel) {
-                    this.containerView.containerView.addChild(cardModel.cardView.sprite);
+                    this.View.View.addChild(cardModel.cardView.sprite);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.CreateText, function (name, str, x, y) {
-                    this.containerView.createTextField(name, str, x, y);
+                    this.View.createTextField(name, str, x, y);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.UpdateText, function (name, str, x, y) {
-                    this.containerView.setTextField(name, str, x, y);
+                    this.View.setTextField(name, str, x, y);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.UpdateContainersScoreAfterAddedInfoCard, function () {
-                    let score = this.cardCollection[this.cardCollection.length - 1].power + parseInt(this.containerView.textField.score.text);
+                    let score = this.cardCollection[this.cardCollection.length - 1].power + parseInt(this.View.textField.score.text);
                     score.toString();
-                    this.containerView.setTextField("score", score);
+                    this.View.setTextField("score", score);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.AddChildToBattle, function (childModel, x = undefined, y = undefined) {
                     this.addChildToContainer(childModel, x, y);
                 }, this)
 
                 .on(Events.Game.AbstractCardContainerModel.GraphicsVisible, function (value) {
-                    this.containerView.edgingVisible(value);
+                    this.View.edgingVisible(value);
                 }, this)
 
                 .on(Events.Game.AbstractCardContainerModel.SetGraphicsListener, function (isListen) {
-                    this.containerView.edgingEventsSetter(this.containerView.graphics[0], isListen);
+                    this.View.edgingEventsSetter(this.View.graphics[0], isListen);
                 }, this)
 
                 .on(Events.Game.AbstractCardContainerModel.SetClickListener, function (player) {
-                    this.containerView.setClickEventsListener(player, this);
+                    this.View.setClickEventsListener(player, this);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.CleanClickListener, function () {
-                    this.containerView.cleanClickEventsListener();
+                    this.View.cleanClickEventsListener();
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.RemoveGapsInContainer, function () {
-                    this.containerView.removeGapsInDeck(this.cardCollection);
+                    this.View.removeGapsInDeck(this.cardCollection);
                 }, this);
+        }
 
-            $(this).one(Events.Game.AbstractCardContainerModel.CreateGraphics, function (event, width, height, worldVisible, x, y) {
-                this.containerView.createHitArea(width, height);
-                if (x && y) {
-                    this.containerView.createGraphicsEdging(width, height, worldVisible, x, y);
-                }
-                else{
-                    this.containerView.createGraphicsEdging(width, height, worldVisible);
-                }
-            }.bind(this));
+        createGraphicsEdging(width, height, worldVisible, x, y){
+            this.View.createHitArea(width, height);
+            if (x && y) {
+                this.View.createGraphicsEdging(width, height, worldVisible, x, y);
+            }
+            else{
+                this.View.createGraphicsEdging(width, height, worldVisible);
+            }
+
         }
 
         addChildToContainer(childModel, x, y){
             let child = childModel.cardView;
             if (x && y) {
-                this.containerView.addChildToContainer(childModel.cardView.sprite, x, y);
+                this.View.addChildToContainer(childModel.cardView.sprite, x, y);
             }
             else {
                 x = this.cardCollection.length * (3 + child.sprite.width) + child.sprite.width/2 + 3;
                 y = child.sprite.height/2;
                 console.log(x, y);
-                this.containerView.addChildToContainer(childModel.cardView.sprite, x, y);
+                this.View.addChildToContainer(childModel.cardView.sprite, x, y);
             }
             this.cardCollection.push(childModel);
         }
 
         // nice work
         setContainerPosition(container, positionX, positionY ) {
-            this.containerView.setContainerPosition(container, positionX, positionY);
+            this.View.setContainerPosition(container, positionX, positionY);
         }
 
         deleteCardFromCardCollection(cardModel){

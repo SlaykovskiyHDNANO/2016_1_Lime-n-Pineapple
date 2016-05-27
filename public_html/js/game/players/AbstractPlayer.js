@@ -4,7 +4,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-define(['jquery', 'backbone', 'underscore', 'pixi', '../card_collection', '../cards/InfoCardModel', '../cards/CardBossModel', '../EventsConfig'], function ($, Backbone, _, pixi, CardCollection, InfoCardModel, CardBossModel, Events) {
+define(['jquery', 'backbone', 'underscore', 'pixi', '../cards/card_collection', '../cards/InfoCardModel', '../cards/CardBossModel', '../EventsConfig'], function ($, Backbone, _, pixi, CardCollection, InfoCardModel, CardBossModel, Events) {
     var AbstractPlayer = function () {
         function AbstractPlayer(loaderRes, container) {
             _classCallCheck(this, AbstractPlayer);

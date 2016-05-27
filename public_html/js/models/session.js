@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'jquery', 'backbone', './user', 'settings'], function (_, $, Backbone, User, Settings) {
+define(['underscore', 'jquery', 'backbone', './user', 'settings', '../collections/users'], function (_, $, Backbone, User, Settings, UsersCollection) {
     return Backbone.Model.extend({
         urlRoot: '/session',
         defaults: {
@@ -8,30 +8,29 @@ define(['underscore', 'jquery', 'backbone', './user', 'settings'], function (_, 
             user_id: 0
         },
         initialize: function initialize() {
-            //UsersManager.attachEvent(this);
             console.log("[Session::initialize()]: begin to create");
         },
 
         updateSessionUser: function updateSessionUser(userData) {
-            this.user.set(_.pick(userData, _.keys(this.user.defaults)));
+            //this.user.set(_.pick(userData, _.keys(this.user.defaults)));
         },
 
         login: function login(opts) {
-            console.log("session login func" + this.user.url());
-            var self = this;
-            this.user.save({ login: opts.login, password: opts.password, logged_in: true }, {
-                success: function success(model, res) {
-                    console.log("SUCCESS");
-                    self.user.set({ logged_in: true, login: opts.login });
-                    Backbone.history.history.back();
-                    return true;
-                },
-                error: function error(model, res) {
-                    console.log("NOTSUCCESS");
-                    Backbone.history.history.back();
-                    return true; // must be false, when front will be use backend
+            var model = Backbone.Model.extend({
+                defaults: {
+                    real_ref: '',
+                    share: ''
                 }
             });
+
+            var collection = Backbone.Collection.extend({
+                url: Settings.getActiveServerUrl() + '/api/v1/session',
+                model: model
+            });
+            var mod = new model();
+            var col = new collection();
+            col.add(mod);
+            mod.fetch({ data: { username: opts.login, password: opts.password }, type: 'POST' });
         },
 
         logout: function logout() {

@@ -1,52 +1,47 @@
 "use strict";
 define([
-    'jquery',
-    'backbone',
-    'pixi',
-    './engine',
-    './renderer'
-], function ($, Backbone, pixi, Engine, Renderer) {
-    class Loader {
+        'jquery',
+        'backbone',
+        'pixi',
+        './engine',
+        './renderer',
+        '../settings'
+    ],
+    function ($, Backbone, pixi, Engine, Renderer, ServerSettings) {
+        class Loader {
             constructor(el, domID) {
                 this.loader = new pixi.loaders.Loader();
 
-                //let socket = new WebSocket("ws://echo.websocket.org/");
-                //socket.onopen = function () {
-                //    console.log("Соединение открылось");
-                //    socket.send(JSON.stringify(ololo));
-                //};
-                //socket.onclose = function () {
-                //    console.log ("Соединение закрылось");
-                //};
-                //socket.onmessage = function (event) {
-                //    console.log ("Пришло сообщение с содержанием:", event.data);
-                //};
-
-                // 0 - system
-                // 1 - Backbone
-                // 2 - Game
-                // 3 - Room
-                //let msg = {
-                //    'type' : 2,
-                //    'data'  : {
-                //        'user': 'lalka',
-                //        'action': 1,
-                //        ''
-                //    }
-                //};
 
 
-                console.log("[loader.jsx], constructor");
+                let socket = new WebSocket("ws://localhost:9999");
+                socket.onopen = function () {
+                    console.log("Соединение открылось");
+                    socket.send(JSON.stringify(ololo));
+                };
+                socket.onclose = function () {
+                    console.log ("Соединение закрылось");
+                    this.downloadRes(el, domID);
+                }.bind(this);
+                socket.onmessage = function (event) {
+                    console.log ("Пришло сообщение с содержанием:", event.data);
+                };
+                socket.onerror = function (err) {
+                    console.log("error websocket");
+                }.bind(this);
 
-                this.loader.add("cards", '/js/engine/cards.json');
 
+            }
+
+            downloadRes(el, domID){
+                this.loader.add("cards", '/js/game/cards.json');
                 this.loader.load(function(loader, res){
                     console.log("[loader.jsx], load");
                     this.renderer = new Renderer(el, domID);
                     this.engine = new Engine(res.cards.data);
                 }, this);
-            }
 
+            }
         }
         return Loader;
     }

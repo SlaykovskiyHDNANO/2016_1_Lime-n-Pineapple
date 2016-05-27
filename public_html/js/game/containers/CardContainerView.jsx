@@ -3,7 +3,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'settings',
+    '../../settings',
     'pixi',
     '../Settings',
     '../EventsConfig'
