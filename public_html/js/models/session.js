@@ -2,7 +2,7 @@
 
 define(['underscore', 'jquery', 'backbone', './user', 'settings', '../collections/users'], function (_, $, Backbone, User, Settings, UsersCollection) {
     return Backbone.Model.extend({
-        urlRoot: '/session',
+        urlRoot: Settings.getActiveServerUrl() + '/api/v1/session',
         defaults: {
             user: null,
             user_id: 0
@@ -16,21 +16,7 @@ define(['underscore', 'jquery', 'backbone', './user', 'settings', '../collection
         },
 
         login: function login(opts) {
-            var model = Backbone.Model.extend({
-                defaults: {
-                    real_ref: '',
-                    share: ''
-                }
-            });
-
-            var collection = Backbone.Collection.extend({
-                url: Settings.getActiveServerUrl() + '/api/v1/session',
-                model: model
-            });
-            var mod = new model();
-            var col = new collection();
-            col.add(mod);
-            mod.fetch({ data: { username: opts.login, password: opts.password }, type: 'POST' });
+            this.fetch({ data: { username: opts.login, password: opts.password }, type: 'POST' });
         },
 
         logout: function logout() {

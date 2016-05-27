@@ -30,41 +30,10 @@ define([
                 //    playersBattleInfoCardContainerView = new CardContainerView(true, true),
                 //    playersBattleInfoCardContainer = new CardContainerModel(playersBattleInfoCardContainerView);
 
-                //this.container = {
-                //    "playersCardsDeck"                  :   playerCardsDeck,
-                //    "playersCardContainerDistant"       :   playersCardContainerDistant,
-                //    "playersCardContainerMelee"         :   playersCardContainerMelee,
-                //    "enemyCardContainerMelee"           :   enemyCardContainerMelee,
-                //    "enemyCardContainerDistant"         :   enemyCardContainerDistant,
-                //    "enemyCardsDeck"                    :   enemyCardsDeck,
-                //    "playersContainerBoss"              :   playersContainerBoss,
-                //    "enemyContainerBoss"                :   enemyContainerBoss,
-                //    "playersContainerBossCard"          :   playersContainerBossCard,
-                //    "enemyContainerBossCard"            :   enemyContainerBossCard,
-                //    "playersInfoCardContainer"          :   playersInfoCardContainer,
-                //    "playersBattleInfoCardContainer"    :   playersBattleInfoCardContainer
-                //};
 
-                //this.loaderRes = loaderRes;
+                this.loaderRes = loaderRes;
 
                 Backbone.on(Events.Backbone.All.AllRendered, function(stage){
-                    //this.battlesContainer = {
-                    //    "playersCardsDeck"                  :   playerCardsDeck,
-                    //    "playersCardContainerDistant"       :   playersCardContainerDistant,
-                    //    "playersCardContainerMelee"         :   playersCardContainerMelee,
-                    //    "enemyCardContainerMelee"           :   enemyCardContainerMelee,
-                    //    "enemyCardContainerDistant"         :   enemyCardContainerDistant,
-                    //    "enemyCardsDeck"                    :   enemyCardsDeck
-                    //};
-                    //let i = 4;
-                    //_.forEach(this.battlesContainer, function(value, key, iter){
-                    //    iter[key].trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage, SETTINGS.battleContainerPositionX, i * SETTINGS.oneLineHeight);
-                    //    $(iter[key]).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.deckWidth, SETTINGS.oneLineHeight]);
-                    //    if (i !== 4 && i !== -1) {
-                    //        iter[key].trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.deckWidth + SETTINGS.indentOfTheScoresForField, SETTINGS.oneLineHeight / 2);
-                    //    }
-                    //    i-=1;
-                    //}, this);
 
                     //this.container.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage, 10, 3 * SETTINGS.oneLineHeight);
                     //$(this.container.playersContainerBoss).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.battleContainerPositionX - 10,
