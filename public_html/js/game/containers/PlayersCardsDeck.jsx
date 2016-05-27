@@ -3,22 +3,25 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    '../../settings',
+    '../Settings',
     'pixi',
     '../containers/AbstractCardContainerModel',
     '../EventsConfig'
-], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
+], function ($, _, Backbone, SETTINGS, pixi, AbstractCardContainerModel, Events) {
 
     class PlayerCardsDeck extends AbstractCardContainerModel{
 
-        constructor(cardContainerView) {
-            super(cardContainerView);
+        constructor(cardCollection) {
+            super();
+            this.cardCollection = cardCollection;
+            $(this).on(Events.Backbone.SomeObject.SendStage, function (event, stage) {
+                this.setContainerPosition(stage, SETTINGS.battleContainerPositionX, 4 * SETTINGS.oneLineHeight);
+                this.createGraphicsEdging(SETTINGS.deckWidth, SETTINGS.oneLineHeight);
+                Backbone.off(Events.Backbone.All.AllRendered);
+            }.bind(this));
+            Backbone.trigger(Events.Backbone.Renderer.GetStage, this);
 
             this
-                .on(Events.Game.PlayersCardsDeck.CreatePlayersDeck, function(cardCollection){
-                    this.cardCollection = cardCollection;
-                    this.createPlayersDeck();
-                }, this)
                 .on(Events.Game.PlayersCardsDeck.RemoveGapsInDeck, function () {
                     this.containerView.removeGapsInDeck(this.cardCollection);
                 }, this)
@@ -32,7 +35,7 @@ define([
         }
 
         createPlayersDeck(){
-            this.containerView.createPlayersDeck(this.cardCollection);
+            this.View.createPlayersDeck(this.cardCollection);
         }
 
     }

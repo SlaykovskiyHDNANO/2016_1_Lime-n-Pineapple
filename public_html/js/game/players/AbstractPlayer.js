@@ -4,30 +4,20 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-define(['jquery', 'backbone', 'underscore', 'pixi', '../cards/card_collection', '../cards/InfoCardModel', '../cards/CardBossModel', '../EventsConfig'], function ($, Backbone, _, pixi, CardCollection, InfoCardModel, CardBossModel, Events) {
+define(['jquery', 'backbone', 'underscore', 'pixi', '../containers/CardContainerModel', '../cards/card_collection', '../cards/InfoCardModel', '../cards/CardBossModel', '../containers/PlayersContainer', '../EventsConfig'], function ($, Backbone, _, pixi, CardContainerModel, CardCollection, InfoCardModel, CardBossModel, PlayersContainer, Events) {
     var AbstractPlayer = function () {
-        function AbstractPlayer(loaderRes, container) {
+        function AbstractPlayer(loaderRes, playersField) {
             _classCallCheck(this, AbstractPlayer);
 
             _.extend(this, Backbone.Events);
             this.loaderRes = loaderRes;
+            this.playersField = playersField;
             this.cardCollection = new CardCollection(loaderRes, 20);
-            if (container.playersCardsDeck !== undefined) {
-                this.playersCardsDeck = container.playersCardsDeck;
-            }
-            this.playersCardContainerMelee = container.playersCardContainerMelee;
-            this.playersCardContainerDistant = container.playersCardContainerDistant;
-            this.playersContainerBoss = container.playersContainerBoss;
-            this.playersContainerBossCard = container.playersContainerBossCard;
-            this.playersInfoCardContainer = container.playersInfoCardContainer;
-            this.enemyCardContainerMelee = container.enemyCardContainerMelee;
-            this.enemyCardContainerDistant = container.enemyCardContainerDistant;
-            this.playersBattleInfoCardContainer = container.playersBattleInfoCardContainer;
-            this.battleContainers = [this.playersCardContainerMelee, this.playersCardContainerDistant, this.enemyCardContainerMelee, this.enemyCardContainerDistant];
-            this.touchedCards = [];
-            this.infoCard = new InfoCardModel(this.playersInfoCardContainer.containerView, this);
 
-            this.createBossCard();
+            this.playersInfoCardContainer = new CardContainerModel();
+            this.playersContainerBoss = new PlayersContainer(loaderRes);
+            this.infoCard = new InfoCardModel(this.playersInfoCardContainer.View, this);
+            this.touchedCards = [];
 
             this.on(Events.Game.AbstractPlayer.InfoCardInOwnContainer, function (cardModel) {
                 this.definitionCardsClasses(cardModel);
@@ -164,20 +154,6 @@ define(['jquery', 'backbone', 'underscore', 'pixi', '../cards/card_collection', 
                 if (card.disposableContainers.enemyDistant) {
                     this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
                     this.nowActiveContainer.push(this.enemyCardContainerDistant);
-                }
-            }
-        }, {
-            key: 'createBossCard',
-            value: function createBossCard() {
-                this.bossCard = new CardBossModel(this.loaderRes);
-                this.playersContainerBossCard.trigger(Events.Game.AbstractCardContainerModel.SetPositionInContainer, this.bossCard.cardView.sprite);
-                this.playersContainerBossCard.trigger(Events.Game.AbstractCardContainerModel.SetCardToCardCollection, this.bossCard);
-            }
-        }, {
-            key: 'createDeck',
-            value: function createDeck() {
-                if (this.playersCardsDeck !== undefined) {
-                    this.playersCardsDeck.trigger(Events.Game.PlayersCardsDeck.CreatePlayersDeck, this.cardCollection);
                 }
             }
         }]);

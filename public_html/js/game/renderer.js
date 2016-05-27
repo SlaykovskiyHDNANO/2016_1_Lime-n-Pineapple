@@ -47,7 +47,7 @@ define(['jquery', 'underscore', 'backbone', 'settings', 'pixi', './EventsConfig'
                 this.intervalID = requestAnimationFrame(function (timeStamp) {
                     self.animate(timeStamp);
                 });
-                Backbone.trigger(Events.Backbone.All.AllRendered, this.stage);
+                Backbone.trigger(Events.Backbone.All.AllRendered);
             }, this);
 
             this.on(Events.Backbone.Renderer.StopRender, function () {

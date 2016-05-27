@@ -12,32 +12,34 @@ define(['jquery', 'backbone', 'pixi', './engine', './renderer', './GameEnvironme
             this.loader = new pixi.loaders.Loader();
             this.gameEnvironment = new GameEnvironment();
 
-            var socket = new WebSocket("ws://localhost:9999");
-            socket.onopen = function () {
-                console.log("Соединение открылось");
-                this.gameEnvironment.setSocket(socket);
-                socket.send(JSON.stringify(ololo));
-            }.bind(this);
-            socket.onclose = function () {
-                console.log("Соединение закрылось");
-                this.downloadRes(el, domID);
-            }.bind(this);
-            socket.onmessage = function (event) {
-                console.log("Пришло сообщение с содержанием:", event.data);
-            };
-            socket.onerror = function (err) {
-                console.log("error websocket");
-            }.bind(this);
+            //let socket = new WebSocket("ws://localhost:9999");
+            //socket.onopen = function () {
+            //    console.log("Соединение открылось");
+            //    this.gameEnvironment.setSocket(socket);
+            //}.bind(this);
+            //socket.onclose = function () {
+            //    console.log ("Соединение закрылось");
+            //    this.downloadRes(el, domID, false);
+            //}.bind(this);
+            //socket.onmessage = function (event) {
+            //    console.log ("Пришло сообщение с содержанием:", event.data);
+            //};
+            //socket.onerror = function (err) {
+            //    console.log("error websocket");
+            //}.bind(this);
+            this.downloadRes(el, domID, this.gameEnvironment.isServerAvailable());
         }
 
         _createClass(Loader, [{
             key: 'downloadRes',
-            value: function downloadRes(el, domID) {
+            value: function downloadRes(el, domID, isServerAvailable) {
+                console.log("download");
                 this.loader.add("cards", '/js/game/cards.json');
                 this.loader.load(function (loader, res) {
                     console.log("[loader.jsx], load");
                     this.renderer = new Renderer(el, domID);
-                    this.engine = new Engine(res.cards.data, this.gameEnvironment.isServerAvalible());
+                    console.log(res.cards);
+                    this.engine = new Engine(res.cards.data, isServerAvailable);
                 }, this);
             }
         }]);

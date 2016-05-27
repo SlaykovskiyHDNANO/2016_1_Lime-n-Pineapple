@@ -12,28 +12,16 @@ define([
     ], function ($, _, Backbone, pixi, Player, Bot, Field, SETTINGS, Events) {
 
         class Engine {
-            constructor(loaderRes) {
-                this.field = new Field();
-                //let
-                //    playersContainerBossView = new CardContainerView(true, true),
-                //    playersContainerBoss = new CardContainerModel(playersContainerBossView),
-                //    playersContainerBossCardView = new CardContainerView(true, true),
-                //    playersContainerBossCard = new CardContainerModel(playersContainerBossCardView),
-
-                //    enemyContainerBossView = new CardContainerView(true, true),
-                //    enemyContainerBoss = new CardContainerModel(enemyContainerBossView),
-                //    enemyContainerBossCardView = new CardContainerView(true, true),
-                //    enemyContainerBossCard = new CardContainerModel(enemyContainerBossCardView);
-
-                //let playersInfoCardContainerView = new CardContainerView(false, false),
-                //    playersInfoCardContainer = new CardContainerModel(playersInfoCardContainerView),
-                //    playersBattleInfoCardContainerView = new CardContainerView(true, true),
-                //    playersBattleInfoCardContainer = new CardContainerModel(playersBattleInfoCardContainerView);
-
-
-                this.loaderRes = loaderRes;
-
-                Backbone.on(Events.Backbone.All.AllRendered, function(stage){
+            constructor(loaderRes, isServerAvailable) {
+                Backbone.on(Events.Backbone.All.AllRendered, function () {
+                    this.playersField = new Field(false);
+                    this.player = new Player(loaderRes, this.playersField);
+                    if (!isServerAvailable){
+                        this.botsField = new Field(true);
+                        this.bot = new Bot(loaderRes, this.botsField);
+                    }
+                });
+                Backbone.trigger(Events.Backbone.Renderer.GameRender);
 
                     //this.container.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage, 10, 3 * SETTINGS.oneLineHeight);
                     //$(this.container.playersContainerBoss).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.battleContainerPositionX - 10,
@@ -59,28 +47,18 @@ define([
                     //this.container.playersBattleInfoCardContainer.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage,
                     //    SETTINGS.infoBattleCardContainerPositionX, SETTINGS.infoBattleCardContainerPositionY);
 
-
-
-
-                }, this);
-                this.engineWork();
-                //Backbone.trigger(Events.Backbone.Renderer.GameRender);
+                if (!isServerAvailable) {
+                    let whoFirst = Math.floor(Math.random() * (2) + 1);
+                    this.singleGame(whoFirst);
+                }
             }
 
-            engineWork(){
-                this.player = new Player(this.loaderRes, containerPlayer);
-                this.enemy  = new Bot   (this.loaderRes, containerEnemy);
-
-                let whoFirst = Math.floor(Math.random() * (2) + 1);
-                this.game(whoFirst);
-            }
-
-            game(whoFirst){
-                if (whoFirst === 1 || whoFirst === 2){
+            singleGame(whoFirst){
+                if (!(whoFirst % 2) && whoFirst % 2){
                     this.player.trigger(Events.Game.AbstractPlayer.Act);
                 }
-                else if (whoFirst === 2){
-                    this.enemy.trigger(Events.Game.AbstractPlayer.Act);
+                else if (whoFirst % 2){
+                    this.bot.trigger(Events.Game.AbstractPlayer.Act);
                 }
             }
         }

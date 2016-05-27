@@ -10,6 +10,7 @@ define([
         class CardCollection {
 
             constructor(loaderRes, size) {
+                console.log(loaderRes);
                 this.cardCollection = [];
                 _.extend(this.cardCollection, Backbone.Events);
 

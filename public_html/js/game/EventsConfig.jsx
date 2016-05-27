@@ -45,6 +45,9 @@ define([],
                     ShowInfoBattleCard                      :   "AbstractCardModel::ShowInfoBattleCard",
                     SetClickEventCard                       :   "AbstractCardModel::SetClickEventCard"
                 },
+                PlayersContainer: {
+                    PreparedForBattle                       :   "PlayersContainer::PreparedForBattle"
+                },
 
                 Player: {
                     PlayerAct                               :   "Player::PlayerAct"
