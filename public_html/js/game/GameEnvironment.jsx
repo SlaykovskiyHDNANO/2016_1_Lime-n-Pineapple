@@ -7,6 +7,14 @@ define([], function (){
                 this.firstPlayer = null;
                 this.secondPlayer = null;
             }
+            setSocket(socket){
+                this.associatedWebsocket = socket;
+                this.serverAvailable = true;
+            }
+
+            isServerAvailable(){
+                return this.serverAvailable;
+            }
         };
     }
 );

@@ -5,20 +5,22 @@ define([
         'pixi',
         './engine',
         './renderer',
+        './GameEnvironment',
         '../settings'
     ],
-    function ($, Backbone, pixi, Engine, Renderer, ServerSettings) {
+    function ($, Backbone, pixi, Engine, Renderer, GameEnvironment, ServerSettings) {
         class Loader {
             constructor(el, domID) {
                 this.loader = new pixi.loaders.Loader();
-
+                this.gameEnvironment = new GameEnvironment();
 
 
                 let socket = new WebSocket("ws://localhost:9999");
                 socket.onopen = function () {
                     console.log("Соединение открылось");
+                    this.gameEnvironment.setSocket(socket);
                     socket.send(JSON.stringify(ololo));
-                };
+                }.bind(this);
                 socket.onclose = function () {
                     console.log ("Соединение закрылось");
                     this.downloadRes(el, domID);
@@ -38,7 +40,7 @@ define([
                 this.loader.load(function(loader, res){
                     console.log("[loader.jsx], load");
                     this.renderer = new Renderer(el, domID);
-                    this.engine = new Engine(res.cards.data);
+                    this.engine = new Engine(res.cards.data, this.gameEnvironment.isServerAvailable());
                 }, this);
 
             }

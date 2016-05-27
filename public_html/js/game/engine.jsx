@@ -61,37 +61,13 @@ define([
 
 
 
-                    this.engineWork();
-                }, this);
 
-                Backbone.trigger(Events.Backbone.Renderer.GameRender);
+                }, this);
+                this.engineWork();
+                //Backbone.trigger(Events.Backbone.Renderer.GameRender);
             }
 
             engineWork(){
-                let containerPlayer = {
-                    "playersCardsDeck"                  :   this.container.playersCardsDeck,
-                    "playersCardContainerDistant"       :   this.container.playersCardContainerDistant,
-                    "playersCardContainerMelee"         :   this.container.playersCardContainerMelee,
-                    "playersContainerBoss"              :   this.container.playersContainerBoss,
-                    "playersContainerBossCard"          :   this.container.playersContainerBossCard,
-                    "playersInfoCardContainer"          :   this.container.playersInfoCardContainer,
-                    "enemyCardContainerMelee"           :   this.container.enemyCardContainerMelee,
-                    "enemyCardContainerDistant"         :   this.container.enemyCardContainerDistant,
-                    "playersBattleInfoCardContainer"    :   this.container.playersBattleInfoCardContainer
-                };
-
-                let containerEnemy = {
-                    "playersCardsDeck"                  :   this.container.enemyCardsDeck,
-                    "playersCardContainerMelee"         :   this.container.enemyCardContainerMelee,
-                    "playersCardContainerDistant"       :   this.container.enemyCardContainerDistant,
-                    "playersContainerBoss"              :   this.container.enemyContainerBoss,
-                    "playersContainerBossCard"          :   this.container.enemyContainerBossCard,
-                    "playersInfoCardContainer"          :   this.container.playersInfoCardContainer,
-                    "enemyCardContainerDistant"         :   this.container.playersCardContainerDistant,
-                    "enemyCardContainerMelee"           :   this.container.playersCardContainerMelee,
-                    "playersBattleInfoCardContainer"    :   this.container.playersBattleInfoCardContainer
-                };
-
                 this.player = new Player(this.loaderRes, containerPlayer);
                 this.enemy  = new Bot   (this.loaderRes, containerEnemy);
 

@@ -16,7 +16,7 @@ define(['underscore', 'jquery', 'backbone', './user', 'settings', '../collection
         },
 
         login: function login(opts) {
-            this.fetch({ data: { username: opts.login, password: opts.password }, type: 'POST' });
+            this.fetch({ data: { opts: opts }, type: 'POST' });
         },
 
         logout: function logout() {

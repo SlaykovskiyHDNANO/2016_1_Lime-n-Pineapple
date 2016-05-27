@@ -23,7 +23,7 @@ define([
 
 
         login: function(opts){
-            this.fetch({data : {username:opts.login, password:opts.password},type:'POST' });
+            this.fetch({data: {opts} , type:'POST' });
         },
 
         logout: function(){
