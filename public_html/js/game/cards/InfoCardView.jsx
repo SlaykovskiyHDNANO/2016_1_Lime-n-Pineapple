@@ -32,7 +32,8 @@ define([
                 this.goToBack = true;
                 Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);
                 $(this).one(Events.Game.InfoCardModel.InfoCardInOwnContainer, function () {
-                    infoCardModel.trigger(Events.Game.InfoCardModel.InfoCardInOwnContainer, cardModel);
+                    console.log("own");
+                    infoCardModel.trigger(Events.Game.Player.InfoCardInOwnContainer, cardModel);
                 });
             }
 

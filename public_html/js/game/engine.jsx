@@ -23,15 +23,7 @@ define([
                 });
                 Backbone.trigger(Events.Backbone.Renderer.GameRender);
 
-                    //this.container.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage, 10, 3 * SETTINGS.oneLineHeight);
-                    //$(this.container.playersContainerBoss).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.battleContainerPositionX - 10,
-                    //    SETTINGS.oneLineHeight, false]);
-                    //this.container.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight/2)
-                    //this.container.playersContainerBossCard.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, this.container.playersContainerBoss.containerView.containerView,
-                    //    0, 0);
-                    //$(this.container.playersContainerBossCard).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.cardWidth,
-                    //    SETTINGS.oneLineHeight]);
-                    //
+
                     //this.container.enemyContainerBoss.trigger(Events.Game.AbstractCardContainerModel.SetContainerPosition, stage, 10, 0);
                     //$(this.container.enemyContainerBoss).trigger(Events.Game.AbstractCardContainerModel.CreateGraphics, [SETTINGS.battleContainerPositionX - 10,
                     //    SETTINGS.oneLineHeight, false]);

@@ -9,8 +9,9 @@ define([
         '../cards/InfoCardModel',
         '../cards/CardBossModel',
         '../containers/PlayersContainer',
-        '../EventsConfig'
-],  function ($, Backbone, _, pixi, CardContainerModel, CardCollection, InfoCardModel, CardBossModel, PlayersContainer, Events) {
+        '../EventsConfig',
+        '../Settings'
+],  function ($, Backbone, _, pixi, CardContainerModel, CardCollection, InfoCardModel, CardBossModel, PlayersContainer, Events, SETTINGS) {
 
         class AbstractPlayer {
 
@@ -21,27 +22,21 @@ define([
                 this.cardCollection = new CardCollection(loaderRes,20);
 
                 this.playersInfoCardContainer = new CardContainerModel();
+                this.playersBattleInfoCardContainer = new CardContainerModel();
+
+                $(this).on(Events.Backbone.SomeObject.SendStage, function (event, stage) {
+                    this.stage = stage;
+                }.bind(this));
+                Backbone.trigger(Events.Backbone.Renderer.GetStage, this);
+
+                this.playersInfoCardContainer.setContainerPosition(this.stage, SETTINGS.infoCardContainerPositionX, 2 * SETTINGS.oneLineHeight);
+                this.playersBattleInfoCardContainer.setContainerPosition(this.stage, SETTINGS.infoBattleCardContainerPositionX, SETTINGS.infoBattleCardContainerPositionY);
+
                 this.playersContainerBoss = new PlayersContainer(loaderRes);
                 this.infoCard = new InfoCardModel(this.playersInfoCardContainer.View, this);
                 this.touchedCards = [];
 
                 this
-                    .on(Events.Game.AbstractPlayer.InfoCardInOwnContainer, function (cardModel) {
-                        this.definitionCardsClasses(cardModel);
-                        $(this).trigger(Events.Game.Bot.MustAddToBattle);
-                    }, this)
-
-                    .on(Events.Game.AbstractPlayer.MustCreateInfoCard, function (cardModel){
-                        this.touchedCards.push(cardModel);
-                        if (this.infoCard.isHide) {
-                            this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
-                            this.infoCard.alreadyGoingBack = false;
-                        }
-                        else{
-                            this.createNewInfoCard();
-                        }
-                    }, this)
-
                     .on(Events.Game.AbstractPlayer.InfoCardBackToDeck, function(cardModel){
                         this.cleanClickListenerForContainers();
                         this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
@@ -119,18 +114,7 @@ define([
                     }, this);
             }
 
-            createNewInfoCard(){
-                this.cleanClickListenerForContainers();
-                this.setGraphicsVisible(false);
-                if (!this.infoCard.alreadyGoingBack) {
-                    this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
-                    this.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this.touchedCards[this.touchedCards.length - 2]);
-                }
-                let newCard = this.touchedCards[this.touchedCards.length - 1];
-                $(this.touchedCards[this.touchedCards.length - 2]).one(Events.Game.AbstractPlayer.PreviousInfoCardInDeck, function (){
-                    this.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, newCard);
-                }.bind(this));
-            }
+
 
             setGraphicsVisible(bool){
                 for (let i = 0; i < this.battleContainers.length; i+=1){
@@ -150,33 +134,6 @@ define([
                 }
             }
 
-            definitionCardsClasses(card){
-                this.nowActiveContainer = [];
-                this.playersCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, card.disposableContainers.melee);
-                if (card.disposableContainers.melee){
-                    this.playersCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
-                    this.nowActiveContainer.push(this.playersCardContainerMelee);
-                }
-
-                this.playersCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, card.disposableContainers.distant);
-                if (card.disposableContainers.distant){
-                    this.playersCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
-                    this.nowActiveContainer.push(this.playersCardContainerDistant);
-                }
-
-                this.enemyCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, card.disposableContainers.enemyMelee);
-                if (card.disposableContainers.enemyMelee){
-                    this.enemyCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
-                    this.nowActiveContainer.push(this.enemyCardContainerMelee);
-                }
-
-                this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, card.disposableContainers.enemyDistant);
-                if (card.disposableContainers.enemyDistant){
-                    this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
-                    this.nowActiveContainer.push(this.enemyCardContainerDistant);
-                }
-            }
-            
 
         }
         return AbstractPlayer;

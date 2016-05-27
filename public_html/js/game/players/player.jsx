@@ -21,15 +21,15 @@ define([
                 this.on(Events.Game.Player.PlayerAct, function(){
                     this.act();
                 }, this);
-                $(this).on(Events.Backbone.SomeObject.SendStage, function (event, stage) {
-                    this.stage = stage;
-                }.bind(this));
-                Backbone.trigger(Events.Backbone.Renderer.GetStage, this);
 
                 this.playersContainerBoss.setContainerPosition(this.stage, 10, 3 * SETTINGS.oneLineHeight);
                 this.playersContainerBoss.createGraphicsEdging(SETTINGS.battleContainerPositionX - 10, SETTINGS.oneLineHeight, false);
                 this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight/2);
                 this.playersContainerBoss.trigger(Events.Game.PlayersContainer.PreparedForBattle);
+
+                this.listenTo(this.infoCard, Events.Game.Player.InfoCardInOwnContainer, function (cardModel) {
+                    this.infoCardCameToOwnContainer(cardModel);
+                }, this);
 
                 for (let i = 0; i < this.cardCollection.length; i+=1){
                     this.setTouchEventCard(this.cardCollection[i]);
@@ -42,13 +42,29 @@ define([
             cardViewWasPressed(cardModel){
                 this.touchedCards.push(cardModel);
                 if (this.infoCard.isHide) {
-                    console.log("ololo");
                     this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
                     this.infoCard.alreadyGoingBack = false;
                 }
                 else{
                     this.createNewInfoCard();
                 }
+            }
+
+            createNewInfoCard(){
+                this.playersField.cleanClickListenerForContainers();
+                this.setGraphicsVisible(false);
+                if (!this.infoCard.alreadyGoingBack) {
+                    this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
+                    this.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this.touchedCards[this.touchedCards.length - 2]);
+                }
+                let newCard = this.touchedCards[this.touchedCards.length - 1];
+                $(this.touchedCards[this.touchedCards.length - 2]).one(Events.Game.AbstractPlayer.PreviousInfoCardInDeck, function (){
+                    this.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, newCard);
+                }.bind(this));
+            }
+
+            infoCardCameToOwnContainer(cardModel){
+                this.playersField.definitionCardsClasses(cardModel);
             }
 
             act(){

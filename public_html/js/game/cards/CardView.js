@@ -62,7 +62,8 @@ define(['backbone', 'underscore', 'pixi', 'jquery', '../Settings', '../EventsCon
                         this.sprite.alpha = 1;
                         this.off(Events.Game.CardView.AlphaVisible);
                     }, this);
-                    cardModel.trigger(Events.Game.AbstractCardModel.CardViewPressed);
+                    console.log("onclickcard");
+                    cardModel.trigger(Events.Game.Player.CardViewPressed);
                 }
             }
         }, {

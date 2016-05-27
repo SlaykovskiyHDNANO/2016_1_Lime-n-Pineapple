@@ -50,7 +50,8 @@ define([], function () {
 
             Player: {
                 PlayerAct: "Player::PlayerAct",
-                CardViewPressed: "Player::CardViewPressed"
+                CardViewPressed: "Player::CardViewPressed",
+                InfoCardInOwnContainer: "Player::InfoCardInOwnContainer"
             },
             Bot: {
                 MustAddToBattle: "Bot::MustAddToBattle"

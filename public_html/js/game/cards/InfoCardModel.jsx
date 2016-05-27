@@ -31,9 +31,6 @@ define([
                     .on(Events.Game.InfoCardModel.ShowInfoCard, function (cardModel) {
                         this.isHide = false;
                         this.infoCardView.showInfoCard(cardModel, this);
-                    }, this)
-                    .on(Events.Game.InfoCardModel.InfoCardInOwnContainer, function (cardModel) {
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.InfoCardInOwnContainer, cardModel);
                     }, this);
 
                 this.infoCardView

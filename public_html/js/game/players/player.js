@@ -24,15 +24,15 @@ define(['jquery', 'backbone', 'pixi', '../containers/AbstractCardContainerModel'
             _this.on(Events.Game.Player.PlayerAct, function () {
                 this.act();
             }, _this);
-            $(_this).on(Events.Backbone.SomeObject.SendStage, function (event, stage) {
-                this.stage = stage;
-            }.bind(_this));
-            Backbone.trigger(Events.Backbone.Renderer.GetStage, _this);
 
             _this.playersContainerBoss.setContainerPosition(_this.stage, 10, 3 * SETTINGS.oneLineHeight);
             _this.playersContainerBoss.createGraphicsEdging(SETTINGS.battleContainerPositionX - 10, SETTINGS.oneLineHeight, false);
             _this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight / 2);
             _this.playersContainerBoss.trigger(Events.Game.PlayersContainer.PreparedForBattle);
+
+            _this.listenTo(_this.infoCard, Events.Game.Player.InfoCardInOwnContainer, function (cardModel) {
+                this.infoCardCameToOwnContainer(cardModel);
+            }, _this);
 
             var _loop = function _loop(i) {
                 _this.setTouchEventCard(_this.cardCollection[i]);
@@ -52,12 +52,30 @@ define(['jquery', 'backbone', 'pixi', '../containers/AbstractCardContainerModel'
             value: function cardViewWasPressed(cardModel) {
                 this.touchedCards.push(cardModel);
                 if (this.infoCard.isHide) {
-                    console.log("ololo");
                     this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
                     this.infoCard.alreadyGoingBack = false;
                 } else {
                     this.createNewInfoCard();
                 }
+            }
+        }, {
+            key: 'createNewInfoCard',
+            value: function createNewInfoCard() {
+                this.playersField.cleanClickListenerForContainers();
+                this.setGraphicsVisible(false);
+                if (!this.infoCard.alreadyGoingBack) {
+                    this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
+                    this.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this.touchedCards[this.touchedCards.length - 2]);
+                }
+                var newCard = this.touchedCards[this.touchedCards.length - 1];
+                $(this.touchedCards[this.touchedCards.length - 2]).one(Events.Game.AbstractPlayer.PreviousInfoCardInDeck, function () {
+                    this.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, newCard);
+                }.bind(this));
+            }
+        }, {
+            key: 'infoCardCameToOwnContainer',
+            value: function infoCardCameToOwnContainer(cardModel) {
+                this.playersField.definitionCardsClasses(cardModel);
             }
         }, {
             key: 'act',
