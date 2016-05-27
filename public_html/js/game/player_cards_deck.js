@@ -8,7 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-define(['jquery', 'underscore', 'backbone', 'settings', 'pixi', './AbstractCardContainerModel', './EventsConfig'], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
+define(['jquery', 'underscore', 'backbone', 'settings', 'pixi', './cards/AbstractCardContainerModel', './EventsConfig'], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
     var PlayerCardsDeck = function (_AbstractCardContaine) {
         _inherits(PlayerCardsDeck, _AbstractCardContaine);
 

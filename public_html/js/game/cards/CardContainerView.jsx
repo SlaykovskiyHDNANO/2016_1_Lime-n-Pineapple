@@ -5,8 +5,8 @@ define([
     'backbone',
     'settings',
     'pixi',
-    './Settings',
-    './EventsConfig'
+    '../Settings',
+    '../EventsConfig'
 ],
     function ($, _, Backbone, Settings, pixi, SETTING, Events) {
         class CardContainerView{

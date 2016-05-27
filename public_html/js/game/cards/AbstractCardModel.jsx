@@ -4,7 +4,7 @@ define([
         'underscore',
         'pixi',
         './CardView',
-        './EventsConfig'
+        '../EventsConfig'
     ],
     function (Backbone, _, pixi, CardView, Events) {
         class Card{

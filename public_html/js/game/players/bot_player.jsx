@@ -3,8 +3,8 @@ define([
         'jquery',
         'backbone',
         'pixi',
-        './abstract_player',
-        './EventsConfig'
+        './AbstractPlayer',
+        '../EventsConfig'
     ],  function ($, Backbone, pixi, AbstractPlayer, Events) {
         class Bot extends AbstractPlayer{
 

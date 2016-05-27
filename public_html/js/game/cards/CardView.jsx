@@ -4,8 +4,8 @@ define([
         'underscore',
         'pixi',
         'jquery',
-        './Settings',
-        './EventsConfig'
+        '../Settings',
+        '../EventsConfig'
 ],
     function (Backbone, _, pixi, $, SETTINGS, Events) {
         class CardView{

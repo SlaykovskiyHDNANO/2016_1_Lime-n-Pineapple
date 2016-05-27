@@ -2,7 +2,7 @@
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-define(['backbone', 'underscore', 'jquery', 'pixi', './InfoCardView', './EventsConfig'], function (Backbone, _, $, pixi, InfoCardView, Events) {
+define(['backbone', 'underscore', 'jquery', 'pixi', './InfoCardView', '../EventsConfig'], function (Backbone, _, $, pixi, InfoCardView, Events) {
     var InfoCard = function InfoCard(container, playerOwner) {
         _classCallCheck(this, InfoCard);
 

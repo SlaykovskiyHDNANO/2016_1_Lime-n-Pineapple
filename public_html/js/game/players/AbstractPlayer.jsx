@@ -4,10 +4,10 @@ define([
         'backbone',
         'underscore',
         'pixi',
-        './card_collection',
-        './InfoCardModel',
-        './CardBossModel',
-        './EventsConfig'
+        '../card_collection',
+        '../cards/InfoCardModel',
+        '../cards/CardBossModel',
+        '../EventsConfig'
 ],  function ($, Backbone, _, pixi, CardCollection, InfoCardModel, CardBossModel, Events) {
 
         class AbstractPlayer {

@@ -5,7 +5,7 @@ define([
         'jquery',
         'pixi',
         './InfoCardView',
-        './EventsConfig'
+        '../EventsConfig'
     ],
     function (Backbone, _, $, pixi, InfoCardView, Events) {
         class InfoCard{

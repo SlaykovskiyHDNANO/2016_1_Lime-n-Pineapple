@@ -5,7 +5,7 @@ define([
     'backbone',
     'settings',
     'pixi',
-    './AbstractCardContainerModel',
+    './cards/AbstractCardContainerModel',
     './EventsConfig'
 ], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
 

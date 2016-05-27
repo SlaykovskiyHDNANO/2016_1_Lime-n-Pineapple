@@ -4,8 +4,8 @@ define([
         'underscore',
         'jquery',
         'pixi',
-        './Settings',
-        './EventsConfig'
+        '../Settings',
+        '../EventsConfig'
     ],
     function (Backbone, _, $, pixi, SETTING, Events) {
         class InfoCardView{
