@@ -8,19 +8,24 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../containers/AbstractCardContainerModel', '../EventsConfig'], function ($, _, Backbone, Settings, pixi, AbstractCardContainerModel, Events) {
+define(['jquery', 'underscore', 'backbone', '../Settings', 'pixi', '../containers/AbstractCardContainerModel', '../EventsConfig'], function ($, _, Backbone, SETTINGS, pixi, AbstractCardContainerModel, Events) {
     var PlayerCardsDeck = function (_AbstractCardContaine) {
         _inherits(PlayerCardsDeck, _AbstractCardContaine);
 
-        function PlayerCardsDeck(cardContainerView) {
+        function PlayerCardsDeck(cardCollection) {
             _classCallCheck(this, PlayerCardsDeck);
 
-            var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerCardsDeck).call(this, cardContainerView));
+            var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerCardsDeck).call(this));
 
-            _this.on(Events.Game.PlayersCardsDeck.CreatePlayersDeck, function (cardCollection) {
-                this.cardCollection = cardCollection;
-                this.createPlayersDeck();
-            }, _this).on(Events.Game.PlayersCardsDeck.RemoveGapsInDeck, function () {
+            _this.cardCollection = cardCollection;
+            $(_this).on(Events.Backbone.SomeObject.SendStage, function (event, stage) {
+                this.setContainerPosition(stage, SETTINGS.battleContainerPositionX, 4 * SETTINGS.oneLineHeight);
+                this.createGraphicsEdging(SETTINGS.deckWidth, SETTINGS.oneLineHeight);
+                Backbone.off(Events.Backbone.All.AllRendered);
+            }.bind(_this));
+            Backbone.trigger(Events.Backbone.Renderer.GetStage, _this);
+
+            _this.on(Events.Game.PlayersCardsDeck.RemoveGapsInDeck, function () {
                 this.containerView.removeGapsInDeck(this.cardCollection);
             }, _this).on(Events.Game.PlayersCardsDeck.DeleteCardFromCardCollection, function (card) {
                 this.deleteCardFromCardCollection(card);
@@ -35,7 +40,7 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../contai
         _createClass(PlayerCardsDeck, [{
             key: 'createPlayersDeck',
             value: function createPlayersDeck() {
-                this.containerView.createPlayersDeck(this.cardCollection);
+                this.View.createPlayersDeck(this.cardCollection);
             }
         }]);
 

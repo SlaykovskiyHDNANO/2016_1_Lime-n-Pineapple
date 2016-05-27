@@ -6,6 +6,7 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', './CardMod
     var CardCollection = function CardCollection(loaderRes, size) {
         _classCallCheck(this, CardCollection);
 
+        console.log(loaderRes);
         this.cardCollection = [];
         _.extend(this.cardCollection, Backbone.Events);
 

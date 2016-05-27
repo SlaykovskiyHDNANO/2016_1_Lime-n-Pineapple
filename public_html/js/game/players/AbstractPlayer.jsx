@@ -4,35 +4,26 @@ define([
         'backbone',
         'underscore',
         'pixi',
+        '../containers/CardContainerModel',
         '../cards/card_collection',
         '../cards/InfoCardModel',
         '../cards/CardBossModel',
+        '../containers/PlayersContainer',
         '../EventsConfig'
-],  function ($, Backbone, _, pixi, CardCollection, InfoCardModel, CardBossModel, Events) {
+],  function ($, Backbone, _, pixi, CardContainerModel, CardCollection, InfoCardModel, CardBossModel, PlayersContainer, Events) {
 
         class AbstractPlayer {
 
-            constructor(loaderRes, container){
+            constructor(loaderRes, playersField){
                 _.extend(this, Backbone.Events);
                 this.loaderRes = loaderRes;
+                this.playersField = playersField;
                 this.cardCollection = new CardCollection(loaderRes,20);
-                if (container.playersCardsDeck !== undefined) {
-                    this.playersCardsDeck = container.playersCardsDeck;
-                }
-                this.playersCardContainerMelee = container.playersCardContainerMelee;
-                this.playersCardContainerDistant = container.playersCardContainerDistant;
-                this.playersContainerBoss = container.playersContainerBoss;
-                this.playersContainerBossCard = container.playersContainerBossCard;
-                this.playersInfoCardContainer = container.playersInfoCardContainer;
-                this.enemyCardContainerMelee = container.enemyCardContainerMelee;
-                this.enemyCardContainerDistant = container.enemyCardContainerDistant;
-                this.playersBattleInfoCardContainer = container.playersBattleInfoCardContainer;
-                this.battleContainers = [this.playersCardContainerMelee, this.playersCardContainerDistant, this.enemyCardContainerMelee,
-                    this.enemyCardContainerDistant];
-                this.touchedCards = [];
-                this.infoCard = new InfoCardModel(this.playersInfoCardContainer.containerView, this);
 
-                this.createBossCard();
+                this.playersInfoCardContainer = new CardContainerModel();
+                this.playersContainerBoss = new PlayersContainer(loaderRes);
+                this.infoCard = new InfoCardModel(this.playersInfoCardContainer.View, this);
+                this.touchedCards = [];
 
                 this
                     .on(Events.Game.AbstractPlayer.InfoCardInOwnContainer, function (cardModel) {
@@ -185,18 +176,7 @@ define([
                     this.nowActiveContainer.push(this.enemyCardContainerDistant);
                 }
             }
-
-            createBossCard(){
-                this.bossCard = new CardBossModel(this.loaderRes);
-                this.playersContainerBossCard.trigger(Events.Game.AbstractCardContainerModel.SetPositionInContainer, this.bossCard.cardView.sprite);
-                this.playersContainerBossCard.trigger(Events.Game.AbstractCardContainerModel.SetCardToCardCollection, this.bossCard);
-            }
-
-            createDeck() {
-                if (this.playersCardsDeck !== undefined) {
-                    this.playersCardsDeck.trigger(Events.Game.PlayersCardsDeck.CreatePlayersDeck, this.cardCollection);
-                }
-            }
+            
 
         }
         return AbstractPlayer;

@@ -27,7 +27,7 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../Settin
             }, this).on(Events.Game.AbstractCardContainerModel.SetCardToCardCollection, function (cardModel) {
                 this.cardCollection.push(cardModel);
             }, this).on(Events.Game.AbstractCardContainerModel.AddChild, function (cardModel) {
-                this.View.View.addChild(cardModel.cardView.sprite);
+                this.View.containerView.addChild(cardModel.cardView.sprite);
             }, this).on(Events.Game.AbstractCardContainerModel.CreateText, function (name, str, x, y) {
                 this.View.createTextField(name, str, x, y);
             }, this).on(Events.Game.AbstractCardContainerModel.UpdateText, function (name, str, x, y) {
