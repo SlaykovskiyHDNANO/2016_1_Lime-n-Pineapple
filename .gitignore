@@ -4,6 +4,7 @@ node_modules
 *.log
 public_html/js/tmpl/*
 *-compiled.js*
-public_html/js/game/*.js
+public_html/js/*.js
+!public_html/js/lib/*.js
 /public_html/.sass-cache
 /.sass-cache
