@@ -26,7 +26,7 @@ define(['jquery', 'underscore', 'backbone', '../Settings', 'pixi', '../container
             Backbone.trigger(Events.Backbone.Renderer.GetStage, _this);
 
             _this.on(Events.Game.PlayersCardsDeck.RemoveGapsInDeck, function () {
-                this.containerView.removeGapsInDeck(this.cardCollection);
+                this.View.removeGapsInDeck(this.cardCollection);
             }, _this).on(Events.Game.PlayersCardsDeck.DeleteCardFromCardCollection, function (card) {
                 this.deleteCardFromCardCollection(card);
             });

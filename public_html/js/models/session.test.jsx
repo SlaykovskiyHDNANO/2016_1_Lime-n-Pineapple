@@ -9,7 +9,7 @@ define(function (require) {
             session = new SessionModel();
         sinon.spy(Backbone, 'sync');
         session.fetch();
-        console.error("DEBUG INFO DURING TEST:", Backbone.sync.calledOnce);
+        console.error("DEBUG INFO DURING TEST:",Backbone.sync.calledOnce);
         QUnit.ok(Backbone.sync.calledOnce);
     });
 });

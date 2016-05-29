@@ -9,7 +9,7 @@ define([
     ],
     function ($, Backbone, AbstractCardContainerModel, BossesCardsContainer, Events, SETTINGS) {
         return class PlayersContainer extends AbstractCardContainerModel{
-            constructor(loaderRes){
+            constructor(loaderRes = null){
                 super();
                 this.loaderRes = loaderRes;
                 this.bossesCardsContainer = new BossesCardsContainer(loaderRes);

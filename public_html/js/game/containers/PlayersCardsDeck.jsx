@@ -23,7 +23,7 @@ define([
 
             this
                 .on(Events.Game.PlayersCardsDeck.RemoveGapsInDeck, function () {
-                    this.containerView.removeGapsInDeck(this.cardCollection);
+                    this.View.removeGapsInDeck(this.cardCollection);
                 }, this)
                 .on(Events.Game.PlayersCardsDeck.DeleteCardFromCardCollection, function (card) {
                     this.deleteCardFromCardCollection(card);

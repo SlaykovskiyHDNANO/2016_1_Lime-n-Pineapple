@@ -61,8 +61,8 @@ define([
                     this.View.edgingEventsSetter(this.View.graphics[0], isListen);
                 }, this)
 
-                .on(Events.Game.AbstractCardContainerModel.SetClickListener, function (player) {
-                    this.View.setClickEventsListener(player, this);
+                .on(Events.Game.AbstractCardContainerModel.SetClickListener, function () {
+                    this.View.setClickEventsListener(this);
                 }, this)
                 .on(Events.Game.AbstractCardContainerModel.CleanClickListener, function () {
                     this.View.cleanClickEventsListener();

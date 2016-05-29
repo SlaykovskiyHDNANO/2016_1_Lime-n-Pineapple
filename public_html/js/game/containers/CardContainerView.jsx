@@ -31,9 +31,9 @@ define([
 
             }
 
-            setClickEventsListener(player, containerModel){
+            setClickEventsListener(containerModel){
                 this.containerView.on('click', function () {
-                    this.onClickContainer(player, containerModel);
+                    this.onClickContainer(containerModel);
                 }, this);
             }
 
@@ -41,8 +41,8 @@ define([
                 this.containerView.off('click');
             }
 
-            onClickContainer(player, containerModel) {
-                player.trigger(Events.Game.AbstractPlayer.AddInfoCardToBattlesContainer, containerModel);
+            onClickContainer(containerModel) {
+                containerModel.trigger(Events.Game.AbstractCardContainerModel.AddInfoCardToBattlesContainer, containerModel);
             }
 
             edgingVisible(value){
@@ -108,7 +108,7 @@ define([
             createGraphicsEdging(width, height, worldVisible = true, x = 3, y = 0){
                 let graph = new pixi.Graphics();
                 this.graphics.push(graph);
-                this.containerView.addChild(graph);
+                this.containerView.addChildAt(graph, 0);
                 graph.beginFill(0xffae80, 0.15);
                 graph.lineStyle(3, 0xff8e4d, 0.3);
                 graph.drawRect(x, y, width + 2 * SETTING.indentOfTheGraphics, height);

@@ -11,6 +11,7 @@ define(['jquery', 'backbone', 'underscore', './containers/CardContainerModel', '
 
             _classCallCheck(this, Field);
 
+            _.extend(this, Backbone.Events);
             this.playersCardContainerMelee = new CardContainerModel();
             this.playersCardContainerDistant = new CardContainerModel();
             this.enemyCardContainerMelee = new CardContainerModel();
@@ -46,6 +47,17 @@ define(['jquery', 'backbone', 'underscore', './containers/CardContainerModel', '
                         iter[key].setContainerPosition(stage, SETTINGS.battleContainerPositionX, i * SETTINGS.oneLineHeight);
                         iter[key].createGraphicsEdging(SETTINGS.deckWidth, SETTINGS.oneLineHeight);
                         iter[key].trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.deckWidth + SETTINGS.indentOfTheScoresForField, SETTINGS.oneLineHeight / 2);
+
+                        iter[key].on(Events.Game.Field.InfoCardAddedToBattle, function () {
+                            var score = 0;
+                            score += parseInt(this.playersCardContainerDistant.View.textField.score.text);
+                            score += parseInt(this.playersCardContainerMelee.View.textField.score.text);
+                            this.trigger(Events.Game.AbstractCardContainerModel.UpdateText, "score", score.toString());
+                        }, this);
+
+                        this.listenTo(iter[key], Events.Game.AbstractCardContainerModel.AddInfoCardToBattlesContainer, function (container) {
+                            this.addInfoCardToBattle(container);
+                        }.bind(this));
                         i -= 1;
                     }, this);
                 }.bind(this));
@@ -57,25 +69,25 @@ define(['jquery', 'backbone', 'underscore', './containers/CardContainerModel', '
                 this.nowActiveContainer = [];
                 this.playersCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, cardModel.disposableContainers.melee);
                 if (cardModel.disposableContainers.melee) {
-                    this.playersCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
+                    this.playersCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener);
                     this.nowActiveContainer.push(this.playersCardContainerMelee);
                 }
 
                 this.playersCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, cardModel.disposableContainers.distant);
                 if (cardModel.disposableContainers.distant) {
-                    this.playersCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
+                    this.playersCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener);
                     this.nowActiveContainer.push(this.playersCardContainerDistant);
                 }
 
                 this.enemyCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, cardModel.disposableContainers.enemyMelee);
                 if (cardModel.disposableContainers.enemyMelee) {
-                    this.enemyCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
+                    this.enemyCardContainerMelee.trigger(Events.Game.AbstractCardContainerModel.SetClickListener);
                     this.nowActiveContainer.push(this.enemyCardContainerMelee);
                 }
 
                 this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, cardModel.disposableContainers.enemyDistant);
                 if (cardModel.disposableContainers.enemyDistant) {
-                    this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener, this);
+                    this.enemyCardContainerDistant.trigger(Events.Game.AbstractCardContainerModel.SetClickListener);
                     this.nowActiveContainer.push(this.enemyCardContainerDistant);
                 }
             }
@@ -85,6 +97,25 @@ define(['jquery', 'backbone', 'underscore', './containers/CardContainerModel', '
                 _.forEach(this.battlesContainer, function (value, key, iter) {
                     iter[key].trigger(Events.Game.AbstractCardContainerModel.CleanClickListener);
                 }, this);
+            }
+        }, {
+            key: 'setGraphicsVisible',
+            value: function setGraphicsVisible(bool) {
+                _.forEach(this.battlesContainer, function (value, key, iter) {
+                    iter[key].trigger(Events.Game.AbstractCardContainerModel.GraphicsVisible, bool);
+                }, this);
+            }
+        }, {
+            key: 'setGraphicsListener',
+            value: function setGraphicsListener(bool) {
+                _.forEach(this.battlesContainer, function (value, key, iter) {
+                    iter[key].trigger(Events.Game.AbstractCardContainerModel.SetGraphicsListener, bool);
+                }, this);
+            }
+        }, {
+            key: 'addInfoCardToBattle',
+            value: function addInfoCardToBattle(container) {
+                this.trigger(Events.Game.Field.AddInfoCardToBattlesContainer, container);
             }
         }]);
 

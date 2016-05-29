@@ -17,9 +17,6 @@ define([
                         this.cardView.setTouchEventCard(this);
                         this.playerOwner = player;
                     }, this)
-                    .on(Events.Game.AbstractCardModel.InfoCardBackToDeck, function(){
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this);
-                    }, this)
                     .on(Events.Game.AbstractCardModel.ShowInfoBattleCard, function () {
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.ShowBattlesInfoCard, this);
                     }, this)
@@ -27,15 +24,24 @@ define([
                         this.cardView.changeClickListenerToBattleFieldListener(this);
                     }, this)
                     .on(Events.Game.AbstractCardModel.CleanClickEventCard, function () {
-                        this.cardView.cleanClickEventCard();
+                        this.cleanClickEventCard();
                     }, this)
                     .on(Events.Game.AbstractCardModel.SetClickEventCard, function () {
-                        this.cardView.setClickEventCard(this);
+                        this.setClickEventCard(this);
                     }, this)
                     .on(Events.Game.AbstractCardModel.CreateBattlesInfoCard, function () {
                         this.cardView.createBattlesInfoCard(this.playerOwner);
                     }, this);
+            }
 
+            cleanClickEventCard(){
+                console.log("cleanClickEventCard");
+                this.cardView.cleanClickEventCard();
+            }
+
+            setClickEventCard(){
+                console.log("setClickEventCard");
+                this.cardView.setClickEventCard(this);
             }
         }
         return Card;

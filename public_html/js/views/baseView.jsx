@@ -1,23 +1,29 @@
 'use strict';
-
-define(['jquery', 'underscore', 'backbone', 'settings'], function ($, _, Backbone, Settings) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'settings'
+], function($,  _, Backbone, Settings ){
     var BaseView = Backbone.View.extend({
         tagName: "mytag",
-        defaults: {
-            "name": "baseView"
+        defaults : {
+            "name" : "baseView"
         },
 
-        constructor: function constructor() {
+        constructor: function () {
             console.log("In constructor");
             Backbone.View.prototype.constructor.apply(this, arguments);
             this._invalidateView = true;
         },
 
-        initialize: function initialize() {},
+        initialize: function () {
 
-        show: function show() {
+        },
+
+        show: function () {
             console.log("[W] BaseView::show() called!");
-            if (this._invalidateView) {
+            if(this._invalidateView) {
                 this.render();
                 this._invalidateView = false;
             }
@@ -25,18 +31,18 @@ define(['jquery', 'underscore', 'backbone', 'settings'], function ($, _, Backbon
             this.$el.show();
         },
 
-        invalidateView: function invalidateView(forceRender) {
+        invalidateView: function(forceRender) {
             this._invalidateView = true;
             if (forceRender === true) {
                 this.render();
             }
         },
 
-        hide: function hide() {
+        hide: function () {
             this.$el.hide();
         },
 
-        render: function render() {
+        render: function () {
             console.log("BaseView render");
             this.$el.html(this.template({}));
             return this;

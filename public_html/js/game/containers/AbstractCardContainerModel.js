@@ -45,8 +45,8 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../Settin
                 this.View.edgingVisible(value);
             }, this).on(Events.Game.AbstractCardContainerModel.SetGraphicsListener, function (isListen) {
                 this.View.edgingEventsSetter(this.View.graphics[0], isListen);
-            }, this).on(Events.Game.AbstractCardContainerModel.SetClickListener, function (player) {
-                this.View.setClickEventsListener(player, this);
+            }, this).on(Events.Game.AbstractCardContainerModel.SetClickListener, function () {
+                this.View.setClickEventsListener(this);
             }, this).on(Events.Game.AbstractCardContainerModel.CleanClickListener, function () {
                 this.View.cleanClickEventsListener();
             }, this).on(Events.Game.AbstractCardContainerModel.RemoveGapsInContainer, function () {

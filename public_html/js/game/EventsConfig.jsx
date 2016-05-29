@@ -5,18 +5,12 @@ define([],
             Game: {
                 AbstractPlayer : {
                     Act                                     :   "AbstractPlayer::Act",
-                    InfoCardInOwnContainer                  :   "AbstractPlayer::InfoCardInOwnContainer",
-                    MustCreateInfoCard                      :   "AbstractPlayer::MustCreateInfoCard",
-                    InfoCardBackToDeck                      :   "AbstractPlayer::InfoCardBackToDeck",
                     GraphicsVisibleAndEventsOnForContainer  :   "AbstractPlayer::GraphicsVisibleAndEventsOnForContainer",
                     RemoveGapsInDeck                        :   "AbstractPlayer::RemoveGapsInDeck",
                     DeleteCardFromCardCollection            :   "AbstractPlayer::DeleteCardFromCardCollection",
                     AddInfoCardToBattlesContainer           :   "AbstractPlayer::AddInfoCardToBattlesContainer",
                     ShowBattlesInfoCard                     :   "AbstractPlayer::ShowBattlesInfoCard",
-                    BattlesInfoCardCreated                  :   "AbstractPlayer::BattlesInfoCardCreated",
-                    InfoCardInContainer                     :   "AbstractPlayer::InfoCardInContainer",
-                    InfoCardAddedToBattle                   :   "AbstractPlayer::InfoCardAddedToBattle",
-                    PreviousInfoCardInDeck                  :   "AbstractPlayer::PreviousInfoCardInDeck"
+                    BattlesInfoCardCreated                  :   "AbstractPlayer::BattlesInfoCardCreated"
 
                 },
                 AbstractCardContainerModel: {
@@ -33,14 +27,15 @@ define([],
                     AddChild                                :   "AbstractCardContainerModel::AddChild",
                     CreateText                              :   "AbstractCardContainerModel::CreateText",
                     UpdateText                              :   "AbstractCardContainerModel::UpdateTextField",
-                    UpdateContainersScoreAfterAddedInfoCard :   "AbstractCardContainerModel::UpdateContainersScoreAfterAddedInfoCard"
+                    UpdateContainersScoreAfterAddedInfoCard :   "AbstractCardContainerModel::UpdateContainersScoreAfterAddedInfoCard",
+                    AddInfoCardToBattlesContainer           :   "AbstractCardContainerModel::AddInfoCardToBattlesContainer"
                 },
                 AbstractCardModel: {
                     ChangeClickListener                     :   "AbstractCardModel::ChangeClickListener",
                     CreateBattlesInfoCard                   :   "AbstractCardModel::CreateBattlesInfoCard",
                     SetTouchEventCard                       :   "AbstractCardModel::SetTouchEventCard",
                     CleanClickEventCard                     :   "AbstractCardModel::CleanClickEventCard",
-                    InfoCardBackToDeck                      :   "AbstractCardModel::InfoCardBackToDeck",
+                    BackToDeck                              :   "AbstractCardModel::BackToDeck",
                     ShowInfoBattleCard                      :   "AbstractCardModel::ShowInfoBattleCard",
                     SetClickEventCard                       :   "AbstractCardModel::SetClickEventCard"
                 },
@@ -51,13 +46,15 @@ define([],
                 Player: {
                     PlayerAct                               :   "Player::PlayerAct",
                     CardViewPressed                         :   "Player::CardViewPressed",
-                    InfoCardInOwnContainer                  :   "Player::InfoCardInOwnContainer"
+                    InfoCardInOwnContainer                  :   "Player::InfoCardInOwnContainer",
+                    InfoCardInContainer                     :   "Player::InfoCardInContainer",
+                    PreviousInfoCardInDeck                  :   "Player::PreviousInfoCardInDeck"
                 },
                 Bot: {
                     MustAddToBattle                         :   "Bot::MustAddToBattle"
                 },
                 CardModel: {
-                    CleanClickEventCard                     :   "CardModel::CleanClickEventCard"
+
                 },
                 InfoCardModel: {
                     ShowInfoCard                            :   "InfoCardModel::ShowInfoCard",
@@ -79,6 +76,10 @@ define([],
                 CardContainerView: {
                     AddChild                                :   "CardContainerView::AddChild",
                     RemoveGapsInContainer                   :   "CardContainerView::RemoveGapsInContainer"
+                },
+                Field: {
+                    AddInfoCardToBattlesContainer           :   "Field::AddInfoCardToBattlesContainer",
+                    InfoCardAddedToBattle                   :   "Field::InfoCardAddedToBattle"
                 }
             },
             Backbone: {

@@ -17,9 +17,13 @@ define([
 
                 this
                     .on(Events.Game.InfoCardModel.BackToDeck, function(cardModel){
+                        cardModel.trigger(Events.Game.AbstractCardModel.CleanClickEventCard);
+                        this.alreadyGoingBack = !this.alreadyGoingBack;
                         this.infoCardView.backToDeck(cardModel);
                     }, this)
+
                     .on(Events.Game.InfoCardModel.AddToBattlesContainer, function (cardModel, containerModel) {
+                        this.isHide = true;
                         this.infoCardView.moveToBattleField(cardModel, containerModel, this.playerOwner);
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.DeleteCardFromCardCollection, cardModel);
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.RemoveGapsInDeck);
@@ -36,13 +40,13 @@ define([
                 this.infoCardView
                     .on(Events.Game.InfoCardModel.InfoCardInContainer, function(cardModel){
                         this.isHide = true;
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.InfoCardInContainer);
-                        $(cardModel).trigger(Events.Game.AbstractPlayer.PreviousInfoCardInDeck);
+                        this.playerOwner.trigger(Events.Game.Player.InfoCardInContainer, cardModel);
+                        $(cardModel).trigger(Events.Game.Player.PreviousInfoCardInDeck);
                         cardModel.cardView.trigger(Events.Game.CardView.AlphaVisible);
-                        cardModel.trigger(Events.Game.AbstractCardModel.SetClickEventCard);
                     }, this)
+
                     .on(Events.Game.InfoCardModel.InfoCardInBattleContainer, function (cardModel, containerModel) {
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.InfoCardAddedToBattle);
+                        containerModel.trigger(Events.Game.Field.InfoCardAddedToBattle);
                         cardModel.cardView.trigger(Events.Game.CardView.AlphaVisible);
                     });
 

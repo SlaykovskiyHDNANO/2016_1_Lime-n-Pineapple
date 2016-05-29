@@ -30,9 +30,9 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../Settin
 
         _createClass(CardContainerView, [{
             key: 'setClickEventsListener',
-            value: function setClickEventsListener(player, containerModel) {
+            value: function setClickEventsListener(containerModel) {
                 this.containerView.on('click', function () {
-                    this.onClickContainer(player, containerModel);
+                    this.onClickContainer(containerModel);
                 }, this);
             }
         }, {
@@ -42,8 +42,8 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../Settin
             }
         }, {
             key: 'onClickContainer',
-            value: function onClickContainer(player, containerModel) {
-                player.trigger(Events.Game.AbstractPlayer.AddInfoCardToBattlesContainer, containerModel);
+            value: function onClickContainer(containerModel) {
+                containerModel.trigger(Events.Game.AbstractCardContainerModel.AddInfoCardToBattlesContainer, containerModel);
             }
         }, {
             key: 'edgingVisible',
@@ -121,7 +121,7 @@ define(['jquery', 'underscore', 'backbone', '../../settings', 'pixi', '../Settin
 
                 var graph = new pixi.Graphics();
                 this.graphics.push(graph);
-                this.containerView.addChild(graph);
+                this.containerView.addChildAt(graph, 0);
                 graph.beginFill(0xffae80, 0.15);
                 graph.lineStyle(3, 0xff8e4d, 0.3);
                 graph.drawRect(x, y, width + 2 * SETTING.indentOfTheGraphics, height);

@@ -10,7 +10,7 @@ define(['backbone', 'underscore', 'jquery', 'pixi', '../Settings', '../EventsCon
             _classCallCheck(this, InfoCardView);
 
             _.extend(this, Backbone.Events);
-            var duration = 800;
+            var duration = 200;
             this.frames = SETTING.fps * (duration / SETTING.second);
             this.sprite = new pixi.Sprite();
             this.container = container;
@@ -20,6 +20,7 @@ define(['backbone', 'underscore', 'jquery', 'pixi', '../Settings', '../EventsCon
         _createClass(InfoCardView, [{
             key: 'showInfoCard',
             value: function showInfoCard(cardModel, infoCardModel) {
+                console.log(cardModel.cardView.sprite);
                 var card = cardModel.cardView.sprite;
                 this.sprite.texture = card.texture;
                 this.calcSize(card.width * 2, card.height * 2);
@@ -59,6 +60,7 @@ define(['backbone', 'underscore', 'jquery', 'pixi', '../Settings', '../EventsCon
                         $(this).trigger("CardOnPosition");
                         this.goToBack = true;
                     }
+                    console.log("movedCard");
                     $(this).trigger(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                     this.zeroMustPosition();
                 }
@@ -88,14 +90,15 @@ define(['backbone', 'underscore', 'jquery', 'pixi', '../Settings', '../EventsCon
                 this.zeroMustPosition();
                 this.calcSize(cardModel.cardView.sprite.width, cardModel.cardView.sprite.height);
                 var positionX = 0;
+                console.log(containerModel, "move To Battle Field");
                 if (containerModel.cardCollection.length) {
                     positionX = containerModel.cardCollection[containerModel.cardCollection.length - 1].cardView.sprite.x;
                     positionX += cardModel.cardView.sprite.width / 2;
                 }
                 if (positionX === 0) {
-                    positionX = containerModel.containerView.containerView.width / 2;
+                    positionX = containerModel.View.containerView.width / 2;
                 }
-                this.calcMustPosition(containerModel.containerView.containerView, positionX, cardModel.cardView.sprite.y);
+                this.calcMustPosition(containerModel.View.containerView, positionX, cardModel.cardView.sprite.y);
                 this.calcDeltaAndRate();
                 this.goToBack = false;
                 cardModel.cardView.sprite.parent.removeChild(cardModel.cardView.sprite);
@@ -128,6 +131,7 @@ define(['backbone', 'underscore', 'jquery', 'pixi', '../Settings', '../EventsCon
                 this.sprite.deltaY = this.sprite.mustY - this.sprite.y;
                 this.sprite.rateX = this.sprite.deltaX / this.frames;
                 this.sprite.rateY = this.sprite.deltaY / this.frames;
+                console.log(this.sprite.deltaX, this.sprite.deltaY, this.sprite.rateX, this.sprite.rateY);
             }
         }, {
             key: 'backToDeck',

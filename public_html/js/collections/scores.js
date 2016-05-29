@@ -1,22 +1,13 @@
-define([
-    'underscore',
-    'backbone',
-    '../models/user',
-    'settings'
-], function(
-    _,
-    Backbone,
-    User,
-    Settings
-){
+'use strict';
+
+define(['underscore', 'backbone', '../models/user', 'settings'], function (_, Backbone, User, Settings) {
 
     return Backbone.Collection.extend({
-        url :  Settings.getActiveServerUrl() + "/api/user/",
-        model : User,
-        comparator: function(val) {
+        url: Settings.getActiveServerUrl() + "/api/user/",
+        model: User,
+        comparator: function comparator(val) {
             return -val.get("score");
         }
 
     });
-
 });

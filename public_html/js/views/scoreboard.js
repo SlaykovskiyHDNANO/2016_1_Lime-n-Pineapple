@@ -1,51 +1,40 @@
 'use strict';
-define([
-    'jquery',
-    'backbone',
-    'settings',
-    'collections/scores',
-    './baseView',
-    'tmpl/scoreboard'
-], function(
-    $,
-    Backbone,
-    Settings,
-    Scores,
-    BaseView,
-    tmpl
-){
+
+define(['jquery', 'backbone', 'settings', 'collections/scores', './baseView', 'tmpl/scoreboard'], function ($, Backbone, Settings, Scores, BaseView, tmpl) {
 
     var Scoreboard = BaseView.extend({
         template: tmpl,
-
+        defaults: {},
         events: {
             "initView": 'render',
             "show": 'show',
-            "click .btn-lg-back": function () {
+            "click .btn-lg-back": function clickBtnLgBack() {
                 Backbone.history.history.back();
             }
         },
 
-        initialize: function () {
+        initialize: function initialize() {
             this.collection = new Scores();
             var i;
-            for (i = 0; i < 3; i+=1) {
-                this.collection.add({name: "Тим", score: 55});
-                this.collection.add({name: "Ида", score: 6});
-                this.collection.add({name: "Роб", score: 545});
+            for (i = 0; i < 3; i += 1) {
+                this.collection.add({ name: "Тим", score: 55 });
+                this.collection.add({ name: "Ида", score: 6 });
+                this.collection.add({ name: "Роб", score: 545 });
             }
             this.collection.sort();
+            this.name = "scoreboard";
         },
 
-        render: function () {
+        render: function render() {
             console.log("[views::scoreboard::render()]: called");
             console.log(this.$el);
             console.log(this.collection);
-            this.$el.html(this.template({person: this.collection.toJSON()}));
+            this.$el.html(this.template({ person: this.collection.toJSON() }));
 
             return this;
         }
 
     });
-    return new Scoreboard();
+
+    return Scoreboard;
 });

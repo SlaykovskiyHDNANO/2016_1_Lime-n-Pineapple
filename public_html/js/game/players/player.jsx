@@ -6,42 +6,78 @@ define([
         '../containers/AbstractCardContainerModel',
         '../containers/CardContainerModel',
         '../containers/PlayersCardsDeck',
+        '../containers/PlayersContainer',
         './AbstractPlayer',
         '../Settings',
         '../EventsConfig'
-    ],  function ($, Backbone, pixi, AbstractCardContainerModel, CardContainerModel, PlayersCardsDeck, AbstractPlayer, SETTINGS, Events) {
+    ],  function ($, Backbone, pixi, AbstractCardContainerModel, CardContainerModel, PlayersCardsDeck, PlayersContainer, AbstractPlayer, SETTINGS, Events) {
         class Player extends AbstractPlayer{
 
-            constructor(loaderRes, playersField){
-                super(loaderRes, playersField);
-                this.playersCardsDeck = new PlayersCardsDeck(this.cardCollection);
-                this.createDeck();
-                this.playersBattleInfoCardContainer = new CardContainerModel();
+            _createPlayersContainerInfo(){
+                this.enemyContainerBoss = new PlayersContainer();
 
-                this.on(Events.Game.Player.PlayerAct, function(){
-                    this.act();
-                }, this);
+                this.enemyContainerBoss.setContainerPosition(this.stage, 10, 0);
+                this.enemyContainerBoss.createGraphicsEdging(SETTINGS.battleContainerPositionX - 10, SETTINGS.oneLineHeight, false);
+                this.enemyContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight/2);
+                this.enemyContainerBoss.trigger(Events.Game.PlayersContainer.PreparedForBattle);
 
                 this.playersContainerBoss.setContainerPosition(this.stage, 10, 3 * SETTINGS.oneLineHeight);
                 this.playersContainerBoss.createGraphicsEdging(SETTINGS.battleContainerPositionX - 10, SETTINGS.oneLineHeight, false);
                 this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.CreateText, "score", "0", SETTINGS.cardWidth * 1.5, SETTINGS.oneLineHeight/2);
                 this.playersContainerBoss.trigger(Events.Game.PlayersContainer.PreparedForBattle);
 
-                this.listenTo(this.infoCard, Events.Game.Player.InfoCardInOwnContainer, function (cardModel) {
-                    this.infoCardCameToOwnContainer(cardModel);
-                }, this);
+            }
 
+            constructor(loaderRes, playersField){
+                super(loaderRes, playersField);
+
+                this.playersCardsDeck = new PlayersCardsDeck(this.cardCollection);
+                this.createDeck();
+
+                // create events for cards and listenTo card's events by player
                 for (let i = 0; i < this.cardCollection.length; i+=1){
                     this.setTouchEventCard(this.cardCollection[i]);
-                    this.listenTo(this.cardCollection[i], Events.Game.Player.CardViewPressed, function () {
-                        this.cardViewWasPressed(this.cardCollection[i]);
+                    let card = this.cardCollection[i];
+
+                    this
+                        .listenTo(card, Events.Game.Player.CardViewPressed, function () {
+                        this.cardViewWasPressed(card);
+                    }, this)
+                        .listenTo(card, Events.Game.AbstractCardModel.BackToDeck, function () {
+                        this.infoCard.trigger(Events.Game.InfoCardModel.BackToDeck, card);
                     }, this);
                 }
+
+                this.playersBattleInfoCardContainer = new CardContainerModel();
+                this.playersBattleInfoCardContainer.setContainerPosition(this.stage, SETTINGS.infoBattleCardContainerPositionX, SETTINGS.infoBattleCardContainerPositionY);
+
+                this._createPlayersContainerInfo();
+
+                this.on(Events.Game.Player.InfoCardInContainer, function (cardModel) {
+                    console.log("Info card in container", cardModel);
+                    this.playersField.setGraphicsVisible(false);
+                    this.playersField.setGraphicsListener(true);
+                    cardModel.setClickEventCard();
+                }, this);
+
+                this
+                    .listenTo(this.infoCard, Events.Game.Player.InfoCardInOwnContainer, function (cardModel) {
+                        this.infoCardCameToOwnContainer(cardModel);
+                    }, this)
+                    .listenTo(this.playersField, Events.Game.Field.AddInfoCardToBattlesContainer, function (container) {
+                        this.addInfoCardToBattlesContainer(container);
+                    }, this)
+                    .listenTo(this.playersField, Events.Game.AbstractCardContainerModel.UpdateText, function (name, value) {
+                        this.playersContainerBoss.trigger(Events.Game.AbstractCardContainerModel.UpdateText, name, value);
+                    }, this);
             }
+
 
             cardViewWasPressed(cardModel){
                 this.touchedCards.push(cardModel);
+                console.log(this.touchedCards);
                 if (this.infoCard.isHide) {
+                    console.log("create New info card isHide = true");
                     this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
                     this.infoCard.alreadyGoingBack = false;
                 }
@@ -51,15 +87,18 @@ define([
             }
 
             createNewInfoCard(){
+                console.log("CreateNewInfoCard");
                 this.playersField.cleanClickListenerForContainers();
-                this.setGraphicsVisible(false);
+                this.playersField.setGraphicsVisible(false);
                 if (!this.infoCard.alreadyGoingBack) {
                     this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
-                    this.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this.touchedCards[this.touchedCards.length - 2]);
+                    this.infoCard.trigger(Events.Game.InfoCardModel.BackToDeck, this.touchedCards[this.touchedCards.length - 2]);
+                    this.playersField.setGraphicsVisible(false);
+                    this.playersField.setGraphicsListener(true);
                 }
                 let newCard = this.touchedCards[this.touchedCards.length - 1];
-                $(this.touchedCards[this.touchedCards.length - 2]).one(Events.Game.AbstractPlayer.PreviousInfoCardInDeck, function (){
-                    this.trigger(Events.Game.AbstractPlayer.MustCreateInfoCard, newCard);
+                $(this.touchedCards[this.touchedCards.length - 2]).one(Events.Game.Player.PreviousInfoCardInDeck, function (){
+                    this.cardViewWasPressed(newCard);
                 }.bind(this));
             }
 
@@ -77,6 +116,19 @@ define([
             createDeck() {
                 this.playersCardsDeck.createPlayersDeck();
             }
+
+
+            addInfoCardToBattlesContainer(container){
+                if (this.touchedCards[this.touchedCards.length - 1]) {
+                    this.touchedCards[this.touchedCards.length - 1].trigger(Events.Game.AbstractCardModel.ChangeClickListener);
+                    this.infoCard.trigger(Events.Game.InfoCardModel.AddToBattlesContainer, this.touchedCards[this.touchedCards.length - 1], container);
+                    this.touchedCards.length = 0;
+                    this.playersField.cleanClickListenerForContainers();
+                    this.playersField.setGraphicsVisible(false);
+                    this.playersField.setGraphicsListener(true);
+                }
+            }
+
 
 
         }

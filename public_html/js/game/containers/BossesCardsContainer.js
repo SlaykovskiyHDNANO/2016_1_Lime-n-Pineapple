@@ -17,7 +17,9 @@ define(['jquery', 'backbone', './AbstractCardContainerModel', '../cards/CardBoss
 
             var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BossesCardsContainer).call(this));
 
-            _this.createBossCard(loaderRes);
+            if (loaderRes) {
+                _this.createBossCard(loaderRes);
+            }
             return _this;
         }
 
@@ -27,6 +29,7 @@ define(['jquery', 'backbone', './AbstractCardContainerModel', '../cards/CardBoss
                 this.bossCard = new CardBossModel(loaderRes);
                 this.cardCollection.push(this.bossCard);
                 this.trigger(Events.Game.AbstractCardContainerModel.AddChild, this.bossCard);
+                this.bossCard.cardView.sprite.x = 6;
             }
         }]);
 

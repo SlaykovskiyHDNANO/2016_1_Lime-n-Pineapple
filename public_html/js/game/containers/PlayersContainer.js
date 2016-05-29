@@ -10,7 +10,9 @@ define(['jquery', 'backbone', './AbstractCardContainerModel', './BossesCardsCont
     return function (_AbstractCardContaine) {
         _inherits(PlayersContainer, _AbstractCardContaine);
 
-        function PlayersContainer(loaderRes) {
+        function PlayersContainer() {
+            var loaderRes = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
             _classCallCheck(this, PlayersContainer);
 
             var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayersContainer).call(this));

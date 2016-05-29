@@ -13,6 +13,7 @@ define([
                 this.sprite = new pixi.Sprite(new pixi.Texture.fromImage(url));
                 this.sprite.interactive = true;
                 this.sprite.buttonMode = true;
+                this.sprite.isClicked = false;
                 this.sprite.width = SETTINGS.cardWidth;
                 this.sprite.height = SETTINGS.oneLineHeight;
                 _.extend(this, Backbone.Events);
@@ -48,9 +49,10 @@ define([
             }
 
             onClickCard(cardModel){
+                console.log(this.sprite.isClicked, "isClicked");
                 if (this.sprite.isClicked){
                     this.sprite.isClicked = false;
-                    cardModel.trigger(Events.Game.AbstractCardModel.InfoCardBackToDeck);
+                    cardModel.trigger(Events.Game.AbstractCardModel.BackToDeck);
                 }
                 else {
                     this.sprite.alpha = 0.1;
@@ -69,6 +71,7 @@ define([
             }
 
             setClickEventCard(cardModel){
+                cardModel.cardView.sprite.isClicked = false;
                 this.sprite.on('click', function () {
                     this.onClickCard(cardModel);
                 }, this);
