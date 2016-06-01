@@ -1,6 +1,6 @@
 "use strict";
 define([
-        'jquery',
+         'jquery',
         'backbone',
         'pixi',
         '../containers/AbstractCardContainerModel',
@@ -30,7 +30,6 @@ define([
 
             constructor(loaderRes, playersField){
                 super(loaderRes, playersField);
-
                 this.playersCardsDeck = new PlayersCardsDeck(this.cardCollection);
                 this.createDeck();
 
@@ -41,10 +40,11 @@ define([
 
                     this
                         .listenTo(card, Events.Game.Player.CardViewPressed, function () {
-                        this.cardViewWasPressed(card);
+                            this.cardViewWasPressed(card);
                     }, this)
                         .listenTo(card, Events.Game.AbstractCardModel.BackToDeck, function () {
-                        this.infoCard.trigger(Events.Game.InfoCardModel.BackToDeck, card);
+                            card.alreadyGoingBack = true;
+                            this.infoCard.trigger(Events.Game.InfoCardModel.BackToDeck, card);
                     }, this);
                 }
 
@@ -75,14 +75,12 @@ define([
 
             cardViewWasPressed(cardModel){
                 this.touchedCards.push(cardModel);
-                console.log(this.touchedCards);
+                this.touchedCards[this.touchedCards.length - 1].alreadyGoingBack = false;
                 if (this.infoCard.isHide) {
-                    console.log("create New info card isHide = true");
                     this.infoCard.trigger(Events.Game.InfoCardModel.ShowInfoCard, cardModel);
-                    this.infoCard.alreadyGoingBack = false;
                 }
                 else{
-                    this.createNewInfoCard();
+                    this.createNewInfoCard(cardModel);
                 }
             }
 
@@ -90,8 +88,7 @@ define([
                 console.log("CreateNewInfoCard");
                 this.playersField.cleanClickListenerForContainers();
                 this.playersField.setGraphicsVisible(false);
-                if (!this.infoCard.alreadyGoingBack) {
-                    this.infoCard.alreadyGoingBack = !this.infoCard.alreadyGoingBack;
+                if (!this.touchedCards[this.touchedCards.length - 2].alreadyGoingBack) {
                     this.infoCard.trigger(Events.Game.InfoCardModel.BackToDeck, this.touchedCards[this.touchedCards.length - 2]);
                     this.playersField.setGraphicsVisible(false);
                     this.playersField.setGraphicsListener(true);
@@ -128,9 +125,6 @@ define([
                     this.playersField.setGraphicsListener(true);
                 }
             }
-
-
-
         }
         return Player;
     }

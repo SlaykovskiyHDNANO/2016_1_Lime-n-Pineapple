@@ -18,7 +18,6 @@ define([
                 this
                     .on(Events.Game.InfoCardModel.BackToDeck, function(cardModel){
                         cardModel.trigger(Events.Game.AbstractCardModel.CleanClickEventCard);
-                        this.alreadyGoingBack = !this.alreadyGoingBack;
                         this.infoCardView.backToDeck(cardModel);
                     }, this)
 

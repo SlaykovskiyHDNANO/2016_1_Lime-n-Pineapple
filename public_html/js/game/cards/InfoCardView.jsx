@@ -12,7 +12,7 @@ define([
 
             constructor(container, playerOwner) {
                 _.extend(this, Backbone.Events);
-                let duration = 200;
+                let duration = 800;
                 this.frames = SETTING.fps * (duration/SETTING.second);
                 this.sprite = new pixi.Sprite();
                 this.container = container;
