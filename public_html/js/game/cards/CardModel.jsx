@@ -10,7 +10,7 @@ define([
         class Card extends AbstractCardModel{
             constructor(loaderRes, id) {
                 let card = loaderRes[(Math.floor(Math.random() * (3)))];
-                super(card.url);
+                super(card.url, card);
                 this.id = id;
                 this.name = card.name;
                 this.url = card.url;

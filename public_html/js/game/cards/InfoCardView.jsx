@@ -4,23 +4,23 @@ define([
         'underscore',
         'jquery',
         'pixi',
+        '../containers/SpritesContainerView',
         '../Settings',
         '../EventsConfig'
     ],
-    function (Backbone, _, $, pixi, SETTING, Events) {
+    function (Backbone, _, $, pixi, SpritesContainerView, SETTING, Events) {
         class InfoCardView{
 
             constructor(container, playerOwner) {
                 _.extend(this, Backbone.Events);
-                let duration = 800;
+                let duration = 1500;
                 this.frames = SETTING.fps * (duration/SETTING.second);
                 this.sprite = new pixi.Sprite();
-                this.container = container;
                 this.playerOwner = playerOwner;
+                this.container = new SpritesContainerView(undefined, this.sprite);
             }
 
             showInfoCard(cardModel, infoCardModel){
-                console.log(cardModel.cardView.sprite);
                 let card = cardModel.cardView.sprite;
                 this.sprite.texture = card.texture;
                 this.calcSize(card.width * 2, card.height * 2);
@@ -28,12 +28,12 @@ define([
                 this.zeroSpritePosition();
                 Backbone.trigger(Events.Backbone.Renderer.AddChildToStage, this.sprite);
                 this.calcStartPositionForInfoCard(card);
-                this.calcMustPosition(this.container.containerView.parent, this.container.containerView.x + this.sprite.width/2, this.container.containerView.y );
+                this.calcMustPosition(SETTING.infoCardContainerPositionX + this.sprite.width/2, SETTING.infoCardContainerPositionY);
                 this.calcDeltaAndRate();
-                this.goToBack = true;
+                this.couldGoToBack = true;
                 Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);
+                $(this).off(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                 $(this).one(Events.Game.InfoCardModel.InfoCardInOwnContainer, function () {
-                    console.log("own");
                     infoCardModel.trigger(Events.Game.Player.InfoCardInOwnContainer, cardModel);
                 });
             }
@@ -53,13 +53,13 @@ define([
                 this.sprite.x+=this.sprite.rateX;
                 this.sprite.y+=this.sprite.rateY;
                 if (Math.abs(this.sprite.x - this.sprite.mustX) < 10 && Math.abs(this.sprite.y - this.sprite.mustY) < 10){
-                    if (!this.goToBack) {
+                    if (!this.couldGoToBack) {
                         $(this).trigger("CardOnPosition");
-                        this.goToBack = true;
+                        this.couldGoToBack = true;
                     }
-                    console.log("movedCard");
-                    $(this).trigger(Events.Game.InfoCardModel.InfoCardInOwnContainer);
-                    this.zeroMustPosition();
+                    if (Math.abs(this.sprite.x - this.container.containerView.x) <= SETTING.cardWidth + 10) {
+                        $(this).trigger(Events.Game.InfoCardModel.InfoCardInOwnContainer);
+                    }
                 }
             }
 
@@ -69,9 +69,9 @@ define([
                 this.sprite.anchor.set(0.5);
             }
 
-            calcMustPosition(object, cardPositionInContainerX, cardPositionInContainerY){
+            calcMustPosition(cardPositionInContainerX, cardPositionInContainerY, object = undefined){
                 let par = object;
-                while(par.parent){
+                while(object !== undefined && par.parent){
                     this.sprite.mustX += par.x;
                     this.sprite.mustY += par.y;
                     par = par.parent;
@@ -92,9 +92,9 @@ define([
                 if (positionX === 0){
                     positionX = containerModel.View.containerView.width / 2;
                 }
-                this.calcMustPosition(containerModel.View.containerView, positionX, cardModel.cardView.sprite.y);
+                this.calcMustPosition(positionX, cardModel.cardView.sprite.y, containerModel.View.containerView);
                 this.calcDeltaAndRate();
-                this.goToBack = false;
+                this.couldGoToBack = false;
                 cardModel.cardView.sprite.parent.removeChild(cardModel.cardView.sprite);
                 $(this).one("CardOnPosition", function () {
                     containerModel.trigger(Events.Game.AbstractCardContainerModel.AddChild, cardModel);
@@ -128,12 +128,12 @@ define([
 
             backToDeck(cardModel){
                 let card = cardModel.cardView;
-                if (this.goToBack) {
+                if (this.couldGoToBack) {
                     this.zeroMustPosition();
                     this.calcSize(card.sprite.width, card.sprite.height);
-                    this.calcMustPosition(card.sprite.parent, card.sprite.x, card.sprite.y);
+                    this.calcMustPosition(card.sprite.x, card.sprite.y, card.sprite.parent);
                     this.calcDeltaAndRate();
-                    this.goToBack = false;
+                    this.couldGoToBack = false;
                     $(this).off(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                     Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);
                 }
@@ -141,8 +141,8 @@ define([
                     if (this.sprite.parent){
                         this.sprite.parent.removeChild(this.sprite);
                         this.trigger(Events.Game.InfoCardModel.InfoCardInContainer, cardModel);
-                        this.goToBack = true;
-                        console.log(this.goToBack);
+                        this.couldGoToBack = true;
+                        console.log(this.couldGoToBack);
                     }
                 }.bind(this));
             }

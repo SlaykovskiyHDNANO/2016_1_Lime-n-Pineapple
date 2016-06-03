@@ -8,9 +8,9 @@ define([
     ],
     function (Backbone, _, pixi, CardView, Events) {
         class Card{
-            constructor(loaderRes) {
+            constructor(loaderRes, cardModel) {
                 _.extend(this, Backbone.Events);
-                this.cardView = new CardView(loaderRes);
+                this.cardView = new CardView(loaderRes, cardModel);
 
                 this
                     .on(Events.Game.AbstractCardModel.SetTouchEventCard, function (player) {
@@ -42,6 +42,14 @@ define([
             setClickEventCard(){
                 console.log("setClickEventCard");
                 this.cardView.setClickEventCard(this);
+            }
+
+            getPositionX(){
+                return this.cardView.sprite.x;
+            }
+
+            getPositionY(){
+                return this.cardView.sprite.y;
             }
         }
         return Card;

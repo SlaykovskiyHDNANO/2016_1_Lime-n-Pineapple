@@ -16,6 +16,9 @@ define(['jquery'],
                 this.fps = 60;
                 this.second = 1000;
                 this.indentOfTheGraphics = 3;
+                this.textSize = this.oneLineHeight/8;
+                this.powersTextPositionX = this.cardWidth/5;
+                this.powersTextPositionY = this.oneLineHeight/6;
             }
         };
         SETTINGS.constructor();

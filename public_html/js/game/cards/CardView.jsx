@@ -4,19 +4,21 @@ define([
         'underscore',
         'pixi',
         'jquery',
+        '../containers/SpritesContainerView',
         '../Settings',
         '../EventsConfig'
 ],
-    function (Backbone, _, pixi, $, SETTINGS, Events) {
+    function (Backbone, _, pixi, $, SpritesContainerView, SETTINGS, Events) {
         class CardView{
-            constructor(url) {
+            constructor(url, cardModel = undefined) {
+                _.extend(this, Backbone.Events);
                 this.sprite = new pixi.Sprite(new pixi.Texture.fromImage(url));
                 this.sprite.interactive = true;
                 this.sprite.buttonMode = true;
                 this.sprite.isClicked = false;
                 this.sprite.width = SETTINGS.cardWidth;
                 this.sprite.height = SETTINGS.oneLineHeight;
-                _.extend(this, Backbone.Events);
+                this.container = new SpritesContainerView(cardModel, this.sprite);
 
             }
 
@@ -77,29 +79,10 @@ define([
                 }, this);
             }
 
-            onMouseOver(){
-                let filter = new pixi.filters.ColorMatrixFilter();
-                this.sprite.filters = [filter];
-                filter.brightness(1.5);
-                this.sprite.y-=10;
-            }
-
-            onMouseOut(){
-                this.sprite.y+=10;
-                this.sprite.filters = null;
-            }
-
-
             setTouchEventCard(cardModel){
                 this.sprite
                     .on('click', function() {
                         this.onClickCard(cardModel);
-                    }, this)
-                    .on('mouseover', function(){
-                        this.onMouseOver();
-                    }, this)
-                    .on('mouseout', function(){
-                        this.onMouseOut();
                     }, this);
             }
 
@@ -115,6 +98,22 @@ define([
                     this.sprite.height / 2;
                 this.sprite.anchor.set(0.5);
                 containerView.trigger(Events.Game.CardContainerView.AddChild, this.sprite);
+            }
+
+            getPositionX(){
+                return this.sprite.x;
+            }
+
+            getPositionY(){
+                return this.sprite.y;
+            }
+
+            getContainersPositionX(){
+                return this.container.containerView.x;
+            }
+
+            getContainersPositionY(){
+                return this.container.containerView.y;
             }
         }
         return CardView;

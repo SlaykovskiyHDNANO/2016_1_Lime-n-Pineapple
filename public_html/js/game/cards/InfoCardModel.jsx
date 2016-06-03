@@ -9,11 +9,11 @@ define([
     ],
     function (Backbone, _, $, pixi, InfoCardView, Events) {
         class InfoCard{
-            constructor(container, playerOwner) {
+            constructor(playerOwner) {
                 this.playerOwner = playerOwner;
                 _.extend(this, Backbone.Events);
                 this.isHide = true;
-                this.infoCardView = new InfoCardView(container, this.playerOwner);
+                this.infoCardView = new InfoCardView(this.playerOwner);
 
                 this
                     .on(Events.Game.InfoCardModel.BackToDeck, function(cardModel){

@@ -126,35 +126,32 @@ define([
             }
 
             negativeClimb(cardCollection, climb){
-                let sprite;
-                sprite = cardCollection[0].cardView.sprite;
-                sprite.x = sprite.width / 2 + SETTING.indentOfTheGraphics + SETTING.indentOfTheContainer;
-                sprite.y = sprite.height / 2;
-                sprite.anchor.set(0.5);
-                this.containerView.addChild(sprite);
+                let container;
+                container = cardCollection[0].cardView.container.containerView;
+                container.x = SETTING.indentOfTheGraphics + SETTING.indentOfTheContainer;
+                container.y = 0;
+                this.containerView.addChild(container);
                 for (let i = 1; i < cardCollection.length; i+=1) {
-                    sprite = cardCollection[i].cardView.sprite;
-                    sprite.x = (sprite.width + climb + SETTING.indentOfTheGraphics) *
-                        i + sprite.width / 2 + SETTING.indentOfTheContainer;
+                    container = cardCollection[i].cardView.container.containerView;
+                    container.x = (container.width + climb + SETTING.indentOfTheGraphics) *
+                        i + SETTING.indentOfTheContainer;
 
-                    sprite.y = sprite.height / 2;
-                    sprite.anchor.set(0.5);
-                    this.containerView.addChild(sprite);
+                    container.y = 0;
+                    this.containerView.addChild(container);
                 }
-
             }
 
             positiveClimb(cardCollection, climb){
-                let sprite;
+                let container;
                 for (let i = 0; i < cardCollection.length; i+=1) {
-                    sprite = cardCollection[i].cardView.sprite;
-                    sprite.x = (sprite.width + SETTING.indentOfTheGraphics) *
-                        i + sprite.width / 2 + climb + SETTING.indentOfTheContainer;
-                    sprite.y = sprite.height / 2;
-                    sprite.anchor.set(0.5);
-                    this.containerView.addChild(sprite);
+                    container = cardCollection[i].cardView.container.containerView;
+                    container.x = (container.width + SETTING.indentOfTheGraphics) *
+                        i + climb + SETTING.indentOfTheContainer;
+                    container.y = 0;
+                    this.containerView.addChild(container);
                 }
             }
+
 
             createPlayersDeck(cardCollection){
                 let lengthOfCardCollection = SETTING.cardWidth * cardCollection.length,
@@ -167,7 +164,6 @@ define([
                     climb = SETTING.cardWidth - (SETTING.deckWidth - SETTING.indentOfTheContainer * 2 - SETTING.cardWidth - SETTING.indentOfTheGraphics * (cardCollection.length - 3))/(cardCollection.length - 1);
                     climb=-climb;
                     this.negativeClimb(cardCollection, climb);
-
                 }
             }
 

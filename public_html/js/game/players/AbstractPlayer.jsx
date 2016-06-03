@@ -26,11 +26,11 @@ define([
                 this.playersField = playersField;
                 this.cardCollection = new CardCollection(loaderRes,10);
 
-                this.playersInfoCardContainer = new CardContainerModel();
-                this.playersInfoCardContainer.setContainerPosition(this.stage, SETTINGS.infoCardContainerPositionX, 2 * SETTINGS.oneLineHeight);
+                //this.playersInfoCardContainer = new CardContainerModel();
+                //this.playersInfoCardContainer.setContainerPosition(this.stage, SETTINGS.infoCardContainerPositionX, 2 * SETTINGS.oneLineHeight);
 
                 this.playersContainerBoss = new PlayersContainer(loaderRes);
-                this.infoCard = new InfoCardModel(this.playersInfoCardContainer.View, this);
+                this.infoCard = new InfoCardModel(this);
                 this.touchedCards = [];
 
                 this
