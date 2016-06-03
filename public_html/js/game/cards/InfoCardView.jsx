@@ -13,11 +13,13 @@ define([
 
             constructor(container, playerOwner) {
                 _.extend(this, Backbone.Events);
-                let duration = 1500;
+                let duration = 200;
                 this.frames = SETTING.fps * (duration/SETTING.second);
                 this.sprite = new pixi.Sprite();
                 this.playerOwner = playerOwner;
                 this.container = new SpritesContainerView(undefined, this.sprite);
+                this.containerView = this.container.containerView;
+                this.container.offMouseEvents();
             }
 
             showInfoCard(cardModel, infoCardModel){
@@ -26,10 +28,11 @@ define([
                 this.calcSize(card.width * 2, card.height * 2);
                 this.zeroMustPosition();
                 this.zeroSpritePosition();
-                Backbone.trigger(Events.Backbone.Renderer.AddChildToStage, this.sprite);
+                Backbone.trigger(Events.Backbone.Renderer.AddChildToStage, this.containerView);
                 this.calcStartPositionForInfoCard(card);
-                this.calcMustPosition(SETTING.infoCardContainerPositionX + this.sprite.width/2, SETTING.infoCardContainerPositionY);
+                this.calcMustPosition(SETTING.infoCardContainerPositionX, SETTING.infoCardContainerPositionY);
                 this.calcDeltaAndRate();
+                this.container.setPowerText(cardModel, this.sprite);
                 this.couldGoToBack = true;
                 Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);
                 $(this).off(Events.Game.InfoCardModel.InfoCardInOwnContainer);
@@ -39,20 +42,25 @@ define([
             }
 
             calcStartPositionForInfoCard(card){
+                this.containerView.x = 0;
+                this.containerView.y = 0;
                 let cardX = card.x, cardY= card.y;
                 while(card.parent.parent !== undefined) {
-                    this.sprite.x += card.parent.x;
-                    this.sprite.y += card.parent.y;
+                    this.containerView.x += card.parent.x;
+                    this.containerView.y += card.parent.y;
                     card = card.parent;
                 }
-                this.sprite.x += cardX;
-                this.sprite.y += cardY;
+                this.containerView.x -= SETTING.cardWidth/2;
+                this.containerView.y -= SETTING.oneLineHeight/2;
+                this.sprite.x = this.sprite.width/2;
+                this.sprite.y = this.sprite.height/2;
+                this.containerView.addChild(this.sprite);
             }
 
             moveCard(){
-                this.sprite.x+=this.sprite.rateX;
-                this.sprite.y+=this.sprite.rateY;
-                if (Math.abs(this.sprite.x - this.sprite.mustX) < 10 && Math.abs(this.sprite.y - this.sprite.mustY) < 10){
+                this.containerView.x+=this.sprite.rateX;
+                this.containerView.y+=this.sprite.rateY;
+                if (Math.abs(this.containerView.x - this.sprite.mustX) < 10 && Math.abs(this.containerView.y - this.sprite.mustY) < 10){
                     if (!this.couldGoToBack) {
                         $(this).trigger("CardOnPosition");
                         this.couldGoToBack = true;
@@ -77,7 +85,7 @@ define([
                     par = par.parent;
                 }
                 this.sprite.mustX += cardPositionInContainerX;
-                this.sprite.mustY +=cardPositionInContainerY;
+                this.sprite.mustY += cardPositionInContainerY;
             }
 
             moveToBattleField(cardModel, containerModel){
@@ -118,8 +126,8 @@ define([
             }
 
             calcDeltaAndRate(){
-                this.sprite.deltaX = this.sprite.mustX - this.sprite.x;
-                this.sprite.deltaY = this.sprite.mustY - this.sprite.y;
+                this.sprite.deltaX = this.sprite.mustX - this.containerView.x;
+                this.sprite.deltaY = this.sprite.mustY - this.containerView.y;
                 this.sprite.rateX = this.sprite.deltaX/this.frames;
                 this.sprite.rateY = this.sprite.deltaY/this.frames;
                 console.log(this.sprite.deltaX, this.sprite.deltaY, this.sprite.rateX, this.sprite.rateY);
@@ -131,8 +139,9 @@ define([
                 if (this.couldGoToBack) {
                     this.zeroMustPosition();
                     this.calcSize(card.sprite.width, card.sprite.height);
-                    this.calcMustPosition(card.sprite.x, card.sprite.y, card.sprite.parent);
+                    this.calcMustPosition(card.sprite.x - SETTING.cardWidth/2, card.sprite.y - SETTING.oneLineHeight/2, card.sprite.parent);
                     this.calcDeltaAndRate();
+                    this.container.removeText("power");
                     this.couldGoToBack = false;
                     $(this).off(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                     Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);

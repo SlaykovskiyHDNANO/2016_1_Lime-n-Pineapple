@@ -20,9 +20,30 @@ define([
                 this.containerView.addChild(sprite);
                 this.textFields = {};
                 if (cardModel !== undefined) {
-                    this.createPowerText(cardModel);
+                    this.createPowerText(cardModel, sprite);
                 }
                 this._createHitArea();
+                this.setMouseEvents();
+
+            }
+
+            setPowerText(cardModel, sprite){
+                let power = "power";
+                if (!this.textFields[power]){
+                    this.createPowerText(cardModel, sprite);
+                }
+                else{
+                    this.textFields[power].text = cardModel.power.toString();
+                    this.setSettingsForText(power, sprite);
+                }
+            }
+
+            offMouseEvents(){
+                this.containerView.off('mouseover');
+                this.containerView.off('mouseout');
+            }
+
+            setMouseEvents(){
                 this.containerView
                     .on('mouseover', function(){
                         this.onMouseOver();
@@ -30,31 +51,27 @@ define([
                     .on('mouseout', function(){
                         this.onMouseOut();
                     }, this);
-
             }
 
-            setPowerText(cardModel){
-                let power = "power";
-                if (!this.textFields[power]){
-                    this.createPowerText(cardModel);
-                }
-                else{
-                    this.textFields[power].text = cardModel.power.toString();
-                    this.textFields[power].anchor.set(0.5);
-                    this.textFields[power].x = SETTINGS.powersTextPositionX;
-                    this.textFields[power].y = SETTINGS.powersTextPositionY;
-                    this.containerView.addChild(this.textFields[power]);
-                }
+            removeText(str){
+                this.containerView.removeChild(this.textFields[str]);
             }
 
-            createPowerText(cardModel){
+            createPowerText(cardModel, sprite){
                 let power = "power";
-                this.textFields[power] = new pixi.Text(cardModel.power, {font : SETTINGS.textSize + 'px Arial', fill : "white"});
-                this.textFields[power].anchor.set(0.5);
-                this.textFields[power].x = SETTINGS.powersTextPositionX;
-                this.textFields[power].y = SETTINGS.powersTextPositionY;
-                this.containerView.addChild(this.textFields[power]);
+                this.textFields[power] = new pixi.Text(cardModel.power.toString(), {font : SETTINGS.textSize + 'px Arial', fill : "white"});
+                console.log(sprite);
+                this.setSettingsForText(power, sprite);
+            }
 
+            setSettingsForText(str, sprite){
+                console.log(this.containerView.width, this.containerView.height);
+                this.textFields[str].style = {font : sprite.height/8 + 'px Arial', fill : "white"};
+                this.textFields[str].anchor.set(0.5);
+                this.textFields[str].x = sprite.width/5;
+                this.textFields[str].y = sprite.height/6;
+                console.log(this.textFields[str].x, this.textFields[str].y );
+                this.containerView.addChild(this.textFields[str]);
             }
 
             _createHitArea(){

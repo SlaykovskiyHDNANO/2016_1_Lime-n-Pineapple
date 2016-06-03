@@ -8,9 +8,9 @@ define([
     ],
     function (Backbone, _, pixi, CardView, Events) {
         class Card{
-            constructor(loaderRes, cardModel) {
+            constructor(cardModel) {
                 _.extend(this, Backbone.Events);
-                this.cardView = new CardView(loaderRes, cardModel);
+                this.cardView = new CardView(cardModel);
 
                 this
                     .on(Events.Game.AbstractCardModel.SetTouchEventCard, function (player) {

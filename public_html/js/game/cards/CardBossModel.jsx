@@ -11,7 +11,7 @@ define([
         class CardBoss extends AbstractCardModel{
             constructor(loaderRes) {
                 let card = loaderRes[(Math.floor(Math.random() * (3)))];
-                super(card.url);
+                super(card);
                 this.url = card.url;
                 this.name = card.name;
                 this.power = card.power;

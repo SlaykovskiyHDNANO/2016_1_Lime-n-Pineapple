@@ -10,9 +10,10 @@ define([
 ],
     function (Backbone, _, pixi, $, SpritesContainerView, SETTINGS, Events) {
         class CardView{
-            constructor(url, cardModel = undefined) {
+            constructor(cardModel) {
                 _.extend(this, Backbone.Events);
-                this.sprite = new pixi.Sprite(new pixi.Texture.fromImage(url));
+                console.log(cardModel);
+                this.sprite = new pixi.Sprite(new pixi.Texture.fromImage(cardModel.url));
                 this.sprite.interactive = true;
                 this.sprite.buttonMode = true;
                 this.sprite.isClicked = false;
@@ -24,7 +25,6 @@ define([
 
             changeClickListenerToBattleFieldListener(cardModel){
                 this.sprite.off('click');
-
                 this.sprite.on('click', function() {
                     this.onClickBattleCard(cardModel);
                 }, this);
@@ -57,10 +57,10 @@ define([
                     cardModel.trigger(Events.Game.AbstractCardModel.BackToDeck);
                 }
                 else {
-                    this.sprite.alpha = 0.1;
+                    this.container.containerView.alpha = 0.1;
                     this.sprite.isClicked = true;
                     this.on(Events.Game.CardView.AlphaVisible, function(){
-                        this.sprite.alpha = 1;
+                        this.container.containerView.alpha = 1;
                         this.off(Events.Game.CardView.AlphaVisible);
                     }, this);
                     console.log("onclickcard");

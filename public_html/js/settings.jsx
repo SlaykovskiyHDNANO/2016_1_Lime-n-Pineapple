@@ -8,7 +8,7 @@ define(['jquery'],
 
             PRODUCTION_SERVER_SCHEMA: 'http',
             PRODUCTION_SERVER_HOST: 'localhost',
-            PRODUCTION_SERVER_PORT: 9999,
+            PRODUCTION_SERVER_PORT: 80,
 
             DEBUG_SERVER_SCHEMA: "http",
             DEBUG_SERVER_HOST: "",

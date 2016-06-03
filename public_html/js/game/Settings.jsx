@@ -8,7 +8,7 @@ define(['jquery'],
                 this.deckWidth = this.cardWidth * 8;
                 this.battleContainerPositionX = $(window).width() / 5;
                 this.infoCardContainerPositionX = this.battleContainerPositionX + this.deckWidth + this.cardWidth + 3;
-                this.infoCardContainerPositionY = this.oneLineHeight * 2;
+                this.infoCardContainerPositionY = this.oneLineHeight;
                 this.infoBattleCardContainerPositionX = $(window).width()/2 - this.cardWidth * 1.5;
                 this.infoBattleCardContainerPositionY = 0;
                 this.indentOfTheContainer = 60;
