@@ -5,8 +5,7 @@ define([
         'backbone',
         'views/allViews',
         'controllers/viewManager',
-        'collections/sessions',
-        'models/session'
+        'collections/sessions'
 ],
     function ($, underscore, Backbone, Views, ViewManager, Sessions) {
         var Router = Backbone.Router.extend({
@@ -34,6 +33,7 @@ define([
 
                 defaultAction: function () {
                     this.VM.getView("main").show();
+                    $("#start").hide();
                 },
 
                 scoreboardAction: function () {

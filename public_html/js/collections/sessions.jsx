@@ -20,6 +20,18 @@ define([
                 this.create({"username" : username, "password" : password});
                 then();
             });
+        },
+
+        checkUser: function () {
+            this.fetch({
+                success : function (model, response) {
+                    return true;
+                },
+                error(msg){
+                    console.log("ERROR " + msg);
+                    return false;
+                }
+            });
         }
 
     });

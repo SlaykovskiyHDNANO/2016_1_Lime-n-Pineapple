@@ -19,6 +19,10 @@ define(['jquery'],
                 this.textSize = this.oneLineHeight/8;
                 this.powersTextPositionX = this.cardWidth/5;
                 this.powersTextPositionY = this.oneLineHeight/6;
+                this.bossesContainerX = 10;
+                this.bossesContainerY = 1.5 * this.oneLineHeight;
+                this.bossesWidth = this.cardWidth * 3;
+                this.bossesHeight = this.oneLineHeight;
             }
         };
         SETTINGS.constructor();

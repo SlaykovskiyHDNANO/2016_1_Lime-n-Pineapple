@@ -8,9 +8,9 @@ define([
     ],
     function (Backbone, _, pixi, CardView, Events) {
         class Card{
-            constructor(cardModel) {
+            constructor(cardModel, isBoss = false) {
                 _.extend(this, Backbone.Events);
-                this.cardView = new CardView(cardModel);
+                this.cardView = new CardView(cardModel, isBoss);
 
                 this
                     .on(Events.Game.AbstractCardModel.SetTouchEventCard, function (player) {
@@ -18,7 +18,9 @@ define([
                         this.playerOwner = player;
                     }, this)
                     .on(Events.Game.AbstractCardModel.ShowInfoBattleCard, function () {
-                        this.playerOwner.trigger(Events.Game.AbstractPlayer.ShowBattlesInfoCard, this);
+                        if (this.playerOwner.infoCard.isHide) {
+                            this.playerOwner.trigger(Events.Game.Player.ShowBattlesInfoCard, this);
+                        }
                     }, this)
                     .on(Events.Game.AbstractCardModel.ChangeClickListener, function () {
                         this.cardView.changeClickListenerToBattleFieldListener(this);

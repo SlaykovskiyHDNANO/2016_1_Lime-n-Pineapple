@@ -11,15 +11,17 @@ define([
     function ($, _, Backbone, Settings, pixi, SETTINGS, Events) {
         return class SpritesContainerView {
 
-            constructor(cardModel, sprite, interactive = true, buttonMode = true, visible = true) {
+            constructor(cardModel, sprite, isBoss, interactive = true, buttonMode = true, visible = true) {
                 _.extend(this, Backbone.Events);
                 this.containerView = new pixi.Container();
                 this.containerView.interactive = interactive;
                 this.containerView.buttonMode = buttonMode;
                 this.containerView.visible = visible;
                 this.containerView.addChild(sprite);
+                console.log(this.containerView, "SpritesContainerView");
+                console.log(sprite);
                 this.textFields = {};
-                if (cardModel !== undefined) {
+                if (cardModel !== undefined && !isBoss) {
                     this.createPowerText(cardModel, sprite);
                 }
                 this._createHitArea();
@@ -41,6 +43,9 @@ define([
             offMouseEvents(){
                 this.containerView.off('mouseover');
                 this.containerView.off('mouseout');
+                if (this.mouseOverEvent){
+                    this.onMouseOut();
+                }
             }
 
             setMouseEvents(){
@@ -79,16 +84,68 @@ define([
             }
 
             onMouseOver(){
+                if (this.mouseOverEvent){
+                    this.onMouseOut();
+                }
                 let filter = new pixi.filters.ColorMatrixFilter();
                 this.containerView.filters = [filter];
                 filter.brightness(1.5);
-                this.containerView.y-=10;
+                this.containerView.y -= 10;
+
+                this.mouseOverEvent = true;
+                this.mouseOutEvent = false;
             }
 
             onMouseOut(){
-                this.containerView.y+=10;
+                if (this.mouseOutEvent){
+                    this.onMouseOver();
+                }
+                this.containerView.y += 10;
                 this.containerView.filters = null;
+
+                this.mouseOverEvent = false;
+                this.mouseOutEvent = true;
             }
+
+            setContainerPosition(container, x, y){
+                container.addChild(this.containerView);
+                this.containerView.x = x;
+                this.containerView.y = y;
+            }
+
+            createGraphicsEdging(width, height, worldVisible = true, x = 3, y = 0){
+                this.graphics = [];
+                let graph = new pixi.Graphics();
+                this.graphics.push(graph);
+                this.containerView.addChildAt(graph, 0);
+                graph.beginFill(0xffae80, 0.15);
+                graph.lineStyle(3, 0xff8e4d, 0.3);
+                graph.drawRect(x, y, width + 2 * SETTINGS.indentOfTheGraphics, height);
+                graph.visible = false;
+                graph.myWorldVisible = worldVisible;
+                if (graph.myWorldVisible) {
+                    this.edgingEventsSetter(graph, true);
+                }
+            }
+
+            edgingEventsSetter(graph, isListen){
+                this.offMouseEvents();
+                if (isListen) {
+                    this.containerView.on('mouseover', function () {
+                        graph.visible = true;
+                        this.onMouseOver();
+                    }, this);
+                    this.containerView.on('mouseout', function () {
+                        graph.visible = false;
+                        this.onMouseOut();
+                    }, this);
+                }
+                else{
+                    this.containerView.off('mouseover');
+                    this.containerView.off('mouseout');
+                }
+            }
+
         };
     }
 );

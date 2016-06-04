@@ -24,6 +24,10 @@ define([
             initialize: function (sessions) {
                 console.log("Inside Login View initialize()");
                 this.sessions = sessions;
+                if (this.sessions.checkUser()){
+                    this._onClickLogin();
+                }
+
                 console.log("Exiting login View initialize()");
                 this.name = "login";
             },
@@ -45,8 +49,17 @@ define([
                 console.log("Request parsed as JSON: ", JSON.stringify(reqObj));
                 this.sessions.login(login, password).then( _ => {
                     console.log("LOGIN SUCCESS");
+                    this._onClickLogin();
                 });
+            },
+
+            _onClickLogin(){
+                Backbone.history.navigate("/", true);
+                $("#start").show();
+                Backbone.trigger("changeLoginToLogout");
             }
+
+
         });
     }
 );

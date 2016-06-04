@@ -11,18 +11,12 @@ define([
         class CardBoss extends AbstractCardModel{
             constructor(loaderRes) {
                 let card = loaderRes[(Math.floor(Math.random() * (3)))];
-                super(card);
+                super(card, true);
                 this.url = card.url;
                 this.name = card.name;
                 this.power = card.power;
                 this.disposableContainers = card.disposableContainers;
-                this.setTouchEventForBossCard();
-            }
-
-            setTouchEventForBossCard(){
-                this.cardView.sprite.on('click', function () {
-
-                }, this);
+                this.cardView.setTouchEventCard(this);
             }
 
         }

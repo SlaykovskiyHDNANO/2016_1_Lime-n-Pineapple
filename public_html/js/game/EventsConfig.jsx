@@ -9,7 +9,6 @@ define([],
                     RemoveGapsInDeck                        :   "AbstractPlayer::RemoveGapsInDeck",
                     DeleteCardFromCardCollection            :   "AbstractPlayer::DeleteCardFromCardCollection",
                     AddInfoCardToBattlesContainer           :   "AbstractPlayer::AddInfoCardToBattlesContainer",
-                    ShowBattlesInfoCard                     :   "AbstractPlayer::ShowBattlesInfoCard",
                     BattlesInfoCardCreated                  :   "AbstractPlayer::BattlesInfoCardCreated"
 
                 },
@@ -28,7 +27,8 @@ define([],
                     CreateText                              :   "AbstractCardContainerModel::CreateText",
                     UpdateText                              :   "AbstractCardContainerModel::UpdateTextField",
                     UpdateContainersScoreAfterAddedInfoCard :   "AbstractCardContainerModel::UpdateContainersScoreAfterAddedInfoCard",
-                    AddInfoCardToBattlesContainer           :   "AbstractCardContainerModel::AddInfoCardToBattlesContainer"
+                    AddInfoCardToBattlesContainer           :   "AbstractCardContainerModel::AddInfoCardToBattlesContainer",
+                    AddContainerToChildren                  :   "AbstractCardContainerModel::AddContainerToChildren"
                 },
                 AbstractCardModel: {
                     ChangeClickListener                     :   "AbstractCardModel::ChangeClickListener",
@@ -48,6 +48,7 @@ define([],
                     CardViewPressed                         :   "Player::CardViewPressed",
                     InfoCardInOwnContainer                  :   "Player::InfoCardInOwnContainer",
                     InfoCardInContainer                     :   "Player::InfoCardInContainer",
+                    ShowBattlesInfoCard                     :   "Player::ShowBattlesInfoCard",
                     PreviousInfoCardInDeck                  :   "Player::PreviousInfoCardInDeck"
                 },
                 Bot: {

@@ -13,6 +13,18 @@ define(['underscore', 'backbone', '../models/session', 'settings'], function (_,
                 _this.create({ "username": username, "password": password });
                 then();
             });
+        },
+
+        checkUser: function checkUser() {
+            this.fetch({
+                success: function success(model, response) {
+                    return true;
+                },
+                error: function error(msg) {
+                    console.log("ERROR " + msg);
+                    return false;
+                }
+            });
         }
 
     });

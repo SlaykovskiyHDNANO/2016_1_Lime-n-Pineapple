@@ -3,7 +3,7 @@
         <div id="view-holder__menu" class="container center-block" >
             <div class="row menu__row">
             <ul class="list-group text-center">
-                <div class=" btn-circle btn-xl" id="start" href="#game">Start</div>
+                <div class=" btn-circle btn-xl"  id="start" href="#game">Start</div>
                 <div class=" btn-circle btn-xl" id="scoreboard" href="#scoreboard">Scores</div>
                 <div class=" btn-circle btn-xl" id="login" href="#login">Login</div>
             </ul>

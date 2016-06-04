@@ -49,36 +49,7 @@ define([
                     //    //this.cleanClickListenerForContainers();
                     //}, this)
                     //
-                    //.on(Events.Game.AbstractPlayer.ShowBattlesInfoCard, function (cardModel) {
-                    //    //this.cleanClickListenerForContainers();
-                    //    if(!this.infoCard.isHide){
-                    //        this.trigger(Events.Game.AbstractPlayer.InfoCardBackToDeck, this.touchedCards[this.touchedCards.length - 1]);
-                    //    }
-                    //    if(this.battleCardModel){
-                    //        this.playersBattleInfoCardContainer.containerView.containerView.removeChild(this.battleCardModel.cardView.battlesInfoCard);
-                    //        this.battleCardModel.trigger(Events.Game.AbstractCardModel.ChangeClickListener);
-                    //        delete this.battleCardModel;
-                    //    }
-                    //    $(this).one(Events.Game.AbstractPlayer.BattlesInfoCardCreated, function () {
-                    //        this.battleCardModel = cardModel;
-                    //        cardModel.trigger(Events.Game.AbstractCardModel.CleanClickEventCard);
-                    //        $(this).one(Events.Backbone.SomeObject.SendStage, function (event, stage) {
-                    //            stage.off('click');
-                    //            let count = 0;
-                    //            stage.on('click', function () {
-                    //                count+=1;
-                    //                if (count === 2) {
-                    //                    this.playersBattleInfoCardContainer.containerView.containerView.removeChild(cardModel.cardView.battlesInfoCard);
-                    //                    cardModel.trigger(Events.Game.AbstractCardModel.ChangeClickListener);
-                    //                    delete this.battleCardModel;
-                    //                }
-                    //            }.bind(this));
-                    //        }.bind(this));
-                    //        Backbone.trigger(Events.Backbone.Renderer.GetStage, this);
-                    //        this.playersBattleInfoCardContainer.containerView.containerView.addChild(cardModel.cardView.battlesInfoCard);
-                    //    }.bind(this));
-                    //    cardModel.trigger(Events.Game.AbstractCardModel.CreateBattlesInfoCard);
-                    //}, this)
+
                     //
             }
 

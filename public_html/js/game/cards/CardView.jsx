@@ -10,7 +10,7 @@ define([
 ],
     function (Backbone, _, pixi, $, SpritesContainerView, SETTINGS, Events) {
         class CardView{
-            constructor(cardModel) {
+            constructor(cardModel, isBoss) {
                 _.extend(this, Backbone.Events);
                 console.log(cardModel);
                 this.sprite = new pixi.Sprite(new pixi.Texture.fromImage(cardModel.url));
@@ -19,7 +19,9 @@ define([
                 this.sprite.isClicked = false;
                 this.sprite.width = SETTINGS.cardWidth;
                 this.sprite.height = SETTINGS.oneLineHeight;
-                this.container = new SpritesContainerView(cardModel, this.sprite);
+                this.container = new SpritesContainerView(cardModel, this.sprite, isBoss);
+                this.containerView = this.container.containerView;
+                console.log(this.containerView, "CardView check containerView");
 
             }
 
@@ -60,6 +62,7 @@ define([
                     this.container.containerView.alpha = 0.1;
                     this.sprite.isClicked = true;
                     this.on(Events.Game.CardView.AlphaVisible, function(){
+                        console.log("AlphaVisible for container card");
                         this.container.containerView.alpha = 1;
                         this.off(Events.Game.CardView.AlphaVisible);
                     }, this);

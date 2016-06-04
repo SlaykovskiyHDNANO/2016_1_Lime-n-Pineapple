@@ -11,7 +11,7 @@ define([
     function (Backbone, _, $, pixi, SpritesContainerView, SETTING, Events) {
         class InfoCardView{
 
-            constructor(container, playerOwner) {
+            constructor(playerOwner) {
                 _.extend(this, Backbone.Events);
                 let duration = 200;
                 this.frames = SETTING.fps * (duration/SETTING.second);
@@ -37,6 +37,7 @@ define([
                 Backbone.trigger(Events.Backbone.Renderer.RenderAnimation, this.moveCard.bind(this), this.frames);
                 $(this).off(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                 $(this).one(Events.Game.InfoCardModel.InfoCardInOwnContainer, function () {
+                    console.log(cardModel, "Show Card Card Model In Own Container");
                     infoCardModel.trigger(Events.Game.Player.InfoCardInOwnContainer, cardModel);
                 });
             }
@@ -65,7 +66,7 @@ define([
                         $(this).trigger("CardOnPosition");
                         this.couldGoToBack = true;
                     }
-                    if (Math.abs(this.sprite.x - this.container.containerView.x) <= SETTING.cardWidth + 10) {
+                    if (Math.abs(this.containerView.x - SETTING.infoCardContainerPositionX) <= SETTING.cardWidth + 10) {
                         $(this).trigger(Events.Game.InfoCardModel.InfoCardInOwnContainer);
                     }
                 }
@@ -91,21 +92,23 @@ define([
             moveToBattleField(cardModel, containerModel){
                 this.zeroMustPosition();
                 this.calcSize(cardModel.cardView.sprite.width, cardModel.cardView.sprite.height);
+                this.container.removeText("power");
                 let positionX = 0;
                 console.log(containerModel, "move To Battle Field");
                 if (containerModel.cardCollection.length) {
-                    positionX = containerModel.cardCollection[containerModel.cardCollection.length - 1].cardView.sprite.x;
+                    positionX = containerModel.cardCollection[containerModel.cardCollection.length - 1].cardView.containerView.x;
                     positionX += cardModel.cardView.sprite.width / 2;
                 }
                 if (positionX === 0){
-                    positionX = containerModel.View.containerView.width / 2;
+                    positionX = containerModel.View.containerView.width / 2 - SETTING.cardWidth;
                 }
-                this.calcMustPosition(positionX, cardModel.cardView.sprite.y, containerModel.View.containerView);
+                console.log(positionX);
+                this.calcMustPosition(positionX, -SETTING.oneLineHeight/2, containerModel.View.containerView);
                 this.calcDeltaAndRate();
                 this.couldGoToBack = false;
-                cardModel.cardView.sprite.parent.removeChild(cardModel.cardView.sprite);
                 $(this).one("CardOnPosition", function () {
-                    containerModel.trigger(Events.Game.AbstractCardContainerModel.AddChild, cardModel);
+                    console.log(cardModel.cardView.containerView);
+                    containerModel.trigger(Events.Game.AbstractCardContainerModel.AddContainerToChildren, cardModel.cardView.containerView);
                     if (this.sprite.parent) {
                         this.sprite.parent.removeChild(this.sprite);
                     }

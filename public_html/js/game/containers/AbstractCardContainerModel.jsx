@@ -52,6 +52,9 @@ define([
                 .on(Events.Game.AbstractCardContainerModel.AddChildToBattle, function (childModel, x = undefined, y = undefined) {
                     this.addChildToContainer(childModel, x, y);
                 }, this)
+                .on(Events.Game.AbstractCardContainerModel.AddContainerToChildren, function (child) {
+                    this.View.containerView.addChild(child);
+                }, this)
 
                 .on(Events.Game.AbstractCardContainerModel.GraphicsVisible, function (value) {
                     this.View.edgingVisible(value);

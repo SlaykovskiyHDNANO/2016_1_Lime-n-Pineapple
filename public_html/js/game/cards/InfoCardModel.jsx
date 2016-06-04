@@ -23,7 +23,7 @@ define([
 
                     .on(Events.Game.InfoCardModel.AddToBattlesContainer, function (cardModel, containerModel) {
                         this.isHide = true;
-                        this.infoCardView.moveToBattleField(cardModel, containerModel, this.playerOwner);
+                        this.infoCardView.moveToBattleField(cardModel, containerModel);
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.DeleteCardFromCardCollection, cardModel);
                         this.playerOwner.trigger(Events.Game.AbstractPlayer.RemoveGapsInDeck);
                         containerModel.trigger(Events.Game.AbstractCardContainerModel.SetCardToCardCollection, cardModel);

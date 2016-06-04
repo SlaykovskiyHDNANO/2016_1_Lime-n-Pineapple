@@ -18,11 +18,17 @@ define(['jquery', 'backbone', 'settings', 'collections/sessions', './baseView', 
         initialize: function initialize(sessions) {
             console.log("Inside Login View initialize()");
             this.sessions = sessions;
+            if (this.sessions.checkUser()) {
+                this._onClickLogin();
+            }
+
             console.log("Exiting login View initialize()");
             this.name = "login";
         },
 
         _onSubmitEvent: function _onSubmitEvent(e) {
+            var _this = this;
+
             e.preventDefault();
             console.log("[views::login::_onSubmitEvent()]: called");
             this.form = this.$('.js-form__login')[0];
@@ -39,7 +45,14 @@ define(['jquery', 'backbone', 'settings', 'collections/sessions', './baseView', 
             console.log("Request parsed as JSON: ", JSON.stringify(reqObj));
             this.sessions.login(login, password).then(function (_) {
                 console.log("LOGIN SUCCESS");
+                _this._onClickLogin();
             });
+        },
+
+        _onClickLogin: function _onClickLogin() {
+            Backbone.history.navigate("/", true);
+            $("#start").show();
+            Backbone.trigger("changeLoginToLogout");
         }
     });
 });

@@ -15,6 +15,7 @@ define([
                 this.playersCardContainerDistant = new CardContainerModel();
                 this.enemyCardContainerMelee = new CardContainerModel();
                 this.enemyCardContainerDistant = new CardContainerModel();
+                this.bossesContainer = new CardContainerModel();
 
                 if (!isBot) {
                     this.battlesContainer = {
@@ -50,6 +51,7 @@ define([
 
                         iter[key].on(Events.Game.Field.InfoCardAddedToBattle, function () {
                             let score = 0;
+                            this.setTouchEventCardsOnField();
                             score+=parseInt(this.playersCardContainerDistant.View.textField.score.text);
                             score+=parseInt(this.playersCardContainerMelee.View.textField.score.text);
                             this.trigger(Events.Game.AbstractCardContainerModel.UpdateText, "score", score.toString());
@@ -60,7 +62,13 @@ define([
                         }.bind(this));
                         i -= 1;
                     }, this);
+                    this.bossesContainer.setContainerPosition(stage, SETTINGS.bossesContainerX, SETTINGS.bossesContainerY);
+                    this.bossesContainer.createGraphicsEdging(SETTINGS.bossesWidth, SETTINGS.bossesHeight);
+                    this.listenTo(this.bossesContainer, Events.Game.AbstractCardContainerModel.AddInfoCardToBattlesContainer, function (container) {
+                        this.addInfoCardToBattle(container);
+                    }.bind(this));
                 }.bind(this));
+
                 Backbone.trigger(Events.Backbone.Renderer.GetStage, this);
 
             }
@@ -114,8 +122,35 @@ define([
                 this.trigger(Events.Game.Field.AddInfoCardToBattlesContainer, container);
             }
 
+            setTouchEventCardsOnField(){
+                for (let i = 0; i < this.playersCardContainerMelee.cardCollection.length; i+=1) {
+                    this.playersCardContainerMelee.cardCollection[i].cardView.container.setMouseEvents();
+                }
+                for (let i = 0; i < this.playersCardContainerDistant.cardCollection.length; i+=1) {
+                    this.playersCardContainerDistant.cardCollection[i].cardView.container.setMouseEvents();
+                }
+                for (let i = 0; i < this.enemyCardContainerMelee.cardCollection.length; i+=1) {
+                    this.enemyCardContainerMelee.cardCollection[i].cardView.container.setMouseEvents();
+                }
+                for (let i = 0; i < this.enemyCardContainerDistant.cardCollection.length; i+=1) {
+                    this.enemyCardContainerDistant.cardCollection[i].cardView.container.setMouseEvents();
+                }
+            }
 
-
+            offTouchEventCardsOnField(){
+                for (let i = 0; i < this.playersCardContainerMelee.cardCollection.length; i+=1) {
+                    this.playersCardContainerMelee.cardCollection[i].cardView.container.offMouseEvents();
+                }
+                for (let i = 0; i < this.playersCardContainerDistant.cardCollection.length; i+=1) {
+                    this.playersCardContainerDistant.cardCollection[i].cardView.container.offMouseEvents();
+                }
+                for (let i = 0; i < this.enemyCardContainerMelee.cardCollection.length; i+=1) {
+                    this.enemyCardContainerMelee.cardCollection[i].cardView.container.offMouseEvents();
+                }
+                for (let i = 0; i < this.enemyCardContainerDistant.cardCollection.length; i+=1) {
+                    this.enemyCardContainerDistant.cardCollection[i].cardView.container.offMouseEvents();
+                }
+            }
         };
     }
 );
