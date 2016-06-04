@@ -64,17 +64,17 @@ define([
 
             createPowerText(cardModel, sprite){
                 let power = "power";
-                this.textFields[power] = new pixi.Text(cardModel.power.toString(), {font : SETTINGS.textSize + 'px Arial', fill : "white"});
+                this.textFields[power] = new pixi.Text(cardModel.power.toString(), {font : SETTINGS.textSize + 'px Arial', fill : "black"});
                 console.log(sprite);
                 this.setSettingsForText(power, sprite);
             }
 
             setSettingsForText(str, sprite){
                 console.log(this.containerView.width, this.containerView.height);
-                this.textFields[str].style = {font : sprite.height/8 + 'px Arial', fill : "white"};
+                this.textFields[str].style = {font : sprite.height/7 + 'px Arial', fill : "black"};
                 this.textFields[str].anchor.set(0.5);
-                this.textFields[str].x = sprite.width/5;
-                this.textFields[str].y = sprite.height/6;
+                this.textFields[str].x = sprite.width/8;
+                this.textFields[str].y = sprite.height/10 - 2;
                 console.log(this.textFields[str].x, this.textFields[str].y );
                 this.containerView.addChild(this.textFields[str]);
             }

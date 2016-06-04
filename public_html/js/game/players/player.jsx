@@ -6,7 +6,7 @@ define([
         '../containers/AbstractCardContainerModel',
         '../containers/CardContainerModel',
         '../containers/PlayersCardsDeck',
-        '..g/containers/PlayersContainer',
+        '../containers/PlayersContainer',
         './AbstractPlayer',
         '../Settings',
         '../EventsConfig'

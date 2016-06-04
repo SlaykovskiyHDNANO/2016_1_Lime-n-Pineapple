@@ -1,7 +1,7 @@
 [
   {
     "name":"card1",
-    "url":"static/resources/card1.png",
+    "url":"static/resources/card01.jpg",
     "disposableContainers":
     {
       "melee":true,
@@ -13,7 +13,7 @@
   },
   {
     "name":"card2",
-    "url":"static/resources/card2.png",
+    "url":"static/resources/card02.jpg",
     "disposableContainers":
     {
       "melee":false,
@@ -25,7 +25,7 @@
   },
   {
     "name":"card3",
-    "url":"static/resources/card3.png",
+    "url":"static/resources/card03.jpg",
     "disposableContainers":
     {
       "melee":true,
